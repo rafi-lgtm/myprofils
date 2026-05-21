@@ -94,7 +94,8 @@
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
         
         .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; }
-        .project-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .project-card.clickable { cursor: pointer; }
+        .project-card.clickable:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         
         .project-img-container { width: 100%; height: 160px; background: var(--surface2); overflow: hidden; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
         .project-img-container img { width: 100%; height: 100%; object-fit: cover; }
@@ -209,6 +210,15 @@ function afficherProjets() {
         const card = document.createElement('div');
         card.className = 'project-card';
 
+        // Gérer le lien du projet
+        let a unLien = p.link && (p.link.startsWith('http') || p.link.includes('.'));
+        let realLink = "";
+        if (a unLien) {
+            realLink = p.link.startsWith('http') ? p.link : `https://${p.link}`;
+            card.classList.add('clickable');
+            card.onclick = () => window.open(realLink, '_blank');
+        }
+
         // Zone Image du projet
         let imgHTML = `<div class="project-img-placeholder">💻</div>`;
         if (p.photo && p.photo.length > 10) {
@@ -218,9 +228,8 @@ function afficherProjets() {
         const tagsHTML = p.tech ? p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
 
         let linkHTML = '';
-        if (p.link && (p.link.startsWith('http') || p.link.includes('.'))) {
-            let realLink = p.link.startsWith('http') ? p.link : `https://${p.link}`;
-            linkHTML = `<a href="${realLink}" target="_blank" class="social-link" style="margin-top:auto; display:inline-flex; width:max-content; color:var(--accent2); border-color:rgba(62,207,178,0.3)">🔗 Lien Projet</a>`;
+        if (a unLien) {
+            linkHTML = `<span class="social-link" style="margin-top:auto; display:inline-flex; width:max-content; color:var(--accent2); border-color:rgba(62,207,178,0.3)">🔗 Voir le Projet</span>`;
         }
 
         card.innerHTML = `
