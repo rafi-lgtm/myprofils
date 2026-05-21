@@ -1,13 +1,5 @@
 {
-  "projets": [
-    {
-      "titre": "test chelou",
-      "tech": "dqdq",
-      "desc": "voila la descrition",
-      "cat": "App",
-      "link": "jsp.com"
-    }
-  ],
+  "projets": [],
   "profil": {
     "nom": "rafael",
     "titre": "le denn",
