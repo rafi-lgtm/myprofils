@@ -136,24 +136,20 @@
 </div>
 
 <script>
-// ══════════ CONFIGURATION GITHUB ══════════
-const CONFIG = {
-    user: "rafi-lgtm",   
-    repo: "myprofils"     
-};
-const DATA_FILE = 'data.json';
+// Le fichier étant local et public, plus besoin d'indiquer l'utilisateur ni le dépôt ici.
+const DATA_FILE = './data.json';
 
 let projets = [];
 let profil = {};
 
 // ══════════ INIT ══════════
 async function init() {
-    let dataChargee = await chargerDepuisGitHubPublic();
+    let dataChargee = await chargerDonnees();
 
     if (!dataChargee) {
         const container = document.getElementById('projects-container');
         if (container) {
-            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger data.json. Vérifie le nom de ton dépôt ou de ton fichier.</p></div>`;
+            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger le fichier data.json. Vérifie qu'il est bien orthographié et dans le même dossier.</p></div>`;
         }
     }
 
@@ -166,23 +162,15 @@ async function init() {
     }
 }
 
-// ══════════ LECTURE DU JSON AVEC ANTI-CACHE FLAMBANT NEUF ══════════
-async function chargerDepuisGitHubPublic() {
+// ══════════ LECTURE DU JSON LOCAL SANS CACHE ══════════
+async function chargerDonnees() {
     try {
-        // Génère un identifiant unique basé sur la milliseconde actuelle (ex: ?t=1716... )
+        // Le timestamp force le navigateur à récupérer la version fraîche à chaque rechargement
         const antiCache = new Date().getTime();
+        const url = `${DATA_FILE}?t=${antiCache}`;
         
-        // On utilise l'URL CDN brute de GitHub
-        const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}?t=${antiCache}`;
-        
-        let res = await fetch(url, { cache: "no-store" }); 
-        
-        if (!res.ok) {
-            // Essai de secours sur la branche master
-            const urlMaster = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/master/${DATA_FILE}?t=${antiCache}`;
-            res = await fetch(urlMaster, { cache: "no-store" });
-            if (!res.ok) return false;
-        }
+        const res = await fetch(url, { cache: "no-store" }); 
+        if (!res.ok) return false;
         
         const data = await res.json();
         projets = data.projets || [];
