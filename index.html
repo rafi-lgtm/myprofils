@@ -77,8 +77,6 @@
         /* SKILLS SECTION */
         .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .skill-tag { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); background: rgba(124,111,247,0.08); border: 1px solid rgba(124,111,247,0.2); padding: 5px 14px; border-radius: 6px; letter-spacing: 0.04em; }
-        .skill-tag.lang { color: var(--accent2); background: rgba(62,207,178,0.08); border-color: rgba(62,207,178,0.2); }
-        .skill-tag.tool { color: var(--warn); background: rgba(247,168,74,0.08); border-color: rgba(247,168,74,0.2); }
 
         /* SECTION HEADERS */
         .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
@@ -119,7 +117,6 @@
         .gh-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
         .gh-save-btn { font-family: 'Space Mono', monospace; font-size: 11px; background: rgba(62,207,178,0.1); color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 10px 18px; border-radius: 8px; cursor: pointer; letter-spacing: 0.06em; transition: all 0.2s; white-space: nowrap; align-self: end; }
         .gh-save-btn:hover { background: rgba(62,207,178,0.2); }
-        .gh-save-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
         /* PROFILE EDIT PANEL */
         #profile-edit-panel { display: none; background: var(--surface); border: 1px solid rgba(124,111,247,0.25); border-radius: 12px; padding: 32px; margin-bottom: 48px; }
@@ -133,7 +130,7 @@
         input, textarea, select { font-family: 'Sora', sans-serif; font-size: 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; width: 100%; transition: border-color 0.2s; resize: none; outline: none; }
         input:focus, textarea:focus, select:focus { border-color: rgba(124,111,247,0.5); }
         input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.5; }
-        select option { background: var(--surface2); }
+        
         .form-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
         .btn-primary { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
         .btn-primary:hover { opacity: 0.85; }
@@ -152,25 +149,12 @@
         /* EMPTY STATE */
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
         .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
-        .empty-state p { font-size: 14px; font-weight: 300; }
-
-        /* PHOTO UPLOAD */
-        .photo-upload-area { border: 2px dashed rgba(124,111,247,0.3); border-radius: 12px; padding: 24px; text-align: center; cursor: pointer; transition: all 0.2s; }
-        .photo-upload-area:hover { border-color: var(--accent); background: rgba(124,111,247,0.05); }
-        .photo-preview { width: 80px; height: 80px; border-radius: 50%; object-fit: cover; margin: 0 auto 12px; display: block; border: 2px solid rgba(124,111,247,0.3); }
-        .photo-upload-label { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.06em; }
 
         /* TOAST */
         .toast { position: fixed; bottom: 32px; right: 32px; background: var(--surface2); border: 1px solid rgba(62,207,178,0.3); color: var(--accent2); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 12px 20px; border-radius: 8px; z-index: 999; opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; transform: translateY(0); }
         .toast.error { border-color: rgba(247,108,108,0.3); color: var(--danger); }
-        .toast.saving { border-color: rgba(247,168,74,0.3); color: var(--warn); }
 
-        /* SPINNER */
-        .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(255,255,255,0.2); border-top-color: var(--accent2); border-radius: 50%; animation: spin 0.6s linear infinite; vertical-align: middle; margin-right: 6px; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* FOOTER */
         footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .footer-text { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
         .footer-dot { color: var(--accent); }
@@ -178,7 +162,6 @@
         @media (max-width: 640px) {
             .profile-hero { grid-template-columns: 1fr; }
             .form-grid, .gh-grid { grid-template-columns: 1fr; }
-            h1 { font-size: 32px; }
         }
     </style>
 </head>
@@ -190,7 +173,6 @@
 
 <div class="wrapper">
 
-    <!-- NAV -->
     <nav>
         <div class="logo" id="nav-logo">PORTFOLIO.DEV</div>
         <div class="nav-right">
@@ -200,16 +182,13 @@
         </div>
     </nav>
 
-    <!-- TABS -->
     <div class="tabs">
         <button class="tab active" onclick="goToTab('projets')" id="tab-projets">// Projets</button>
         <button class="tab" onclick="goToTab('profil')" id="tab-profil">// Profil</button>
     </div>
 
-    <!-- ══════════════ PAGE PROJETS ══════════════ -->
     <div class="page active" id="page-projets">
 
-        <!-- GITHUB CONFIG -->
         <div id="github-panel">
             <div class="gh-header">
                 <span class="gh-title">⚡ Connexion GitHub</span>
@@ -235,7 +214,6 @@
             </div>
         </div>
 
-        <!-- ADMIN PANEL (ajout projet) -->
         <div id="admin-panel">
             <div class="panel-title">Ajouter un projet</div>
             <div class="form-grid">
@@ -267,12 +245,11 @@
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn-secondary" onclick="resetForm()">Annuler</button>
+                <button class="btn-secondary" onclick="resetForm()">Effacer</button>
                 <button class="btn-primary" onclick="ajouterProjet()">Publier →</button>
             </div>
         </div>
 
-        <!-- PROJECTS LIST -->
         <div>
             <div class="section-header">
                 <span class="section-title">// Réalisations</span>
@@ -283,10 +260,8 @@
 
     </div>
 
-    <!-- ══════════════ PAGE PROFIL ══════════════ -->
     <div class="page" id="page-profil">
 
-        <!-- PROFILE EDIT PANEL (admin only) -->
         <div id="profile-edit-panel">
             <div class="panel-title">Modifier le profil</div>
             <div class="form-grid">
@@ -323,37 +298,27 @@
                     <input type="text" id="edit-site" placeholder="https://...">
                 </div>
                 <div class="form-group full">
-                    <label>Photo de profil (URL ou upload)</label>
-                    <div class="photo-upload-area" onclick="document.getElementById('photo-input').click()">
-                        <img id="photo-preview-img" class="photo-preview" src="" style="display:none">
-                        <div id="photo-placeholder" style="font-size:28px;margin-bottom:8px;">📷</div>
-                        <div class="photo-upload-label">Clique pour choisir une photo</div>
-                        <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="handlePhotoUpload(event)">
-                    </div>
-                    <input type="text" id="edit-photo" placeholder="Ou colle une URL d'image..." style="margin-top:8px;" oninput="previewPhotoURL(this.value)">
+                    <label>Photo de profil (URL d'image)</label>
+                    <input type="text" id="edit-photo" placeholder="Colle l'URL d'une image en ligne...">
                 </div>
             </div>
             <div class="form-actions">
-                <button class="btn-secondary" onclick="annulerEditProfil()">Annuler</button>
-                <button class="btn-primary" onclick="sauvegarderProfil()">Sauvegarder →</button>
+                <button class="btn-primary" onclick="sauvegarderProfil()">Sauvegarder le profil →</button>
             </div>
         </div>
 
-        <!-- PROFILE DISPLAY -->
         <div id="profile-display">
-            <!-- injected by JS -->
-        </div>
+            </div>
 
     </div>
 
     <footer>
-        <span class="footer-text">Portfolio <span class="footer-dot">·</span> 2025</span>
+        <span class="footer-text">Portfolio <span class="footer-dot">·</span> 2026</span>
         <span class="footer-text" id="footer-date"></span>
     </footer>
 
 </div>
 
-<!-- MODAL EDIT PROJECT -->
 <div class="modal-overlay" id="edit-modal">
     <div class="modal">
         <div class="modal-header">
@@ -409,35 +374,179 @@ const DATA_FILE = 'data.json';
 
 // ══════════ INIT ══════════
 async function init() {
-    // Charger config GitHub du localStorage
     ghConfig = JSON.parse(localStorage.getItem('ghConfig') || '{}');
 
-    // Essayer de charger les données depuis GitHub d'abord
-    if (ghConfig.token && ghConfig.user && ghConfig.repo) {
-        await chargerDepuisGitHub();
-    } else {
-        // Fallback localStorage
+    // Charge par défaut tes identifiants s'ils ne sont pas saisis dans le localStorage
+    if (!ghConfig.user) ghConfig.user = "rafi-lgtm";
+    if (!ghConfig.repo) ghConfig.repo = "myprofil";
+
+    let dataChargee = false;
+
+    // 1. Tenter de charger de manière publique (sans token)
+    if (ghConfig.user && ghConfig.repo) {
+        dataChargee = await chargerDonneesPubliques(ghConfig.user, ghConfig.repo);
+    }
+
+    // 2. Si échec et qu'un token est présent, charger de manière authentifiée
+    if (!dataChargee && ghConfig.token && ghConfig.user && ghConfig.repo) {
+        dataChargee = await chargerDepuisGitHub();
+    }
+
+    // 3. Fallback LocalStorage si rien n'a marché
+    if (!dataChargee) {
         projets = JSON.parse(localStorage.getItem('mesProjets') || '[]');
-        if (!projets.length) projets = [{ titre: "Mon premier site", desc: "Un site web statique pour apprendre les bases.", tech: "HTML, CSS", cat: "Web", link: "" }];
         profil = JSON.parse(localStorage.getItem('monProfil') || '{}');
+        if (!projets.length) {
+            projets = [{ titre: "Mon premier site", desc: "Configuration requise pour charger le fichier data.json.", tech: "HTML, CSS", cat: "Web", link: "" }];
+        }
     }
 
     verifierAdmin();
     afficherProjets();
     afficherProfil();
+    
     document.getElementById('footer-date').textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-    if (profil.nom) document.getElementById('nav-logo').textContent = profil.nom.toUpperCase().split(' ')[0] + '.DEV';
 }
 
-// ══════════ TABS ══════════
+// ══════════ CHARGEMENT DES DONNÉES ══════════
+async function chargerDonneesPubliques(user, repo) {
+    try {
+        // Lien direct brut (Raw) vers ton fichier data.json sur GitHub Pages/Dépôt Public
+        const url = `https://raw.githubusercontent.com/${user}/${repo}/main/${DATA_FILE}`;
+        const res = await fetch(url);
+        if (!res.ok) return false;
+        const data = await res.json();
+        projets = data.projets || [];
+        profil = data.profil || {};
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+async function chargerDepuisGitHub() {
+    try {
+        const url = `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${DATA_FILE}`;
+        const res = await fetch(url, { headers: { 'Authorization': `token ${ghConfig.token}`, 'Accept': 'application/vnd.github.v3+json' } });
+        if (!res.ok) return false;
+        const data = await res.json();
+        const content = decodeURIComponent(escape(atob(data.content)));
+        const parsed = JSON.parse(content);
+        projets = parsed.projets || [];
+        profil = parsed.profil || {};
+        return true;
+    } catch(e) {
+        return false;
+    }
+}
+
+// ══════════ AFFICHAGE RENDU DYNAMIQUE ══════════
+function afficherProjets() {
+    const container = document.getElementById('projects-container');
+    const countLabel = document.getElementById('count-label');
+    container.innerHTML = '';
+    
+    countLabel.textContent = `${projets.length} projet${projets.length > 1 ? 's' : ''}`;
+
+    if (projets.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">📂</div><p>Aucun projet publié pour le moment.</p></div>`;
+        return;
+    }
+
+    projets.forEach((p, idx) => {
+        const card = document.createElement('div');
+        card.className = 'project-card';
+        
+        let actionButtons = '';
+        if (adminMode) {
+            actionButtons = `
+                <div class="card-actions">
+                    <button class="btn-icon edit" onclick="openModal(${idx})">✏️</button>
+                    <button class="btn-icon" onclick="supprimerProjet(${idx})">✕</button>
+                </div>`;
+        }
+
+        let linkIcon = '';
+        if (p.link) {
+            linkIcon = `<a href="${p.link}" target="_blank" class="social-link" style="margin-top:12px; display:inline-flex; width:max-content">🔗 Voir sur GitHub</a>`;
+        }
+
+        const tagsHTML = p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('');
+
+        card.innerHTML = `
+            ${actionButtons}
+            <div class="card-cat">${p.cat || 'Web'}</div>
+            <div class="card-title">${p.titre}</div>
+            <div class="card-desc">${p.desc}</div>
+            <div class="tech-row">${tagsHTML}</div>
+            ${linkIcon}
+        `;
+        container.appendChild(card);
+    });
+}
+
+function afficherProfil() {
+    const display = document.getElementById('profile-display');
+    
+    const nom = profil.nom || "Ton Nom";
+    const titre = profil.titre || "Développeur / Passionné";
+    const bio = profil.bio || "Modifie ces informations depuis l'interface d'administration.";
+    const email = profil.email || "";
+    const github = profil.github || "";
+    const linkedin = profil.linkedin || "";
+    const site = profil.site || "";
+    const photo = profil.photo || "";
+
+    document.getElementById('nav-logo').textContent = nom.toUpperCase().split(' ')[0] + '.DEV';
+
+    let photoHTML = `<div class="avatar">👨‍💻</div>`;
+    if (photo) {
+        photoHTML = `<div class="avatar"><img src="${photo}" alt="Avatar"></div>`;
+    }
+
+    let skillsHTML = '';
+    if (profil.skills && profil.skills.length) {
+        const tags = profil.skills.map(s => `<span class="skill-tag">${s.trim()}</span>`).join('');
+        skillsHTML = `
+            <div class="section-block" style="margin-top: 40px;">
+                <div class="section-header"><span class="section-title">// Compétences</span></div>
+                <div class="skills-grid">${tags}</div>
+            </div>`;
+    }
+
+    let linksHTML = '';
+    if (email) linksHTML += `<a href="mailto:${email}" class="social-link">📧 Email</a>`;
+    if (github) linksHTML += `<a href="${github}" target="_blank" class="social-link">🐙 GitHub</a>`;
+    if (linkedin) linksHTML += `<a href="${linkedin}" target="_blank" class="social-link">💼 LinkedIn</a>`;
+    if (site) linksHTML += `<a href="${site}" target="_blank" class="social-link">🌐 Site web</a>`;
+
+    display.innerHTML = `
+        <div class="profile-hero">
+            <div class="avatar-wrap">${photoHTML}</div>
+            <div class="profile-info">
+                <div class="profile-name">${nom}</div>
+                <div class="profile-title">${titre}</div>
+                <div class="profile-bio">${bio}</div>
+                <div class="social-row">${linksHTML}</div>
+            </div>
+        </div>
+        ${skillsHTML}
+    `;
+}
+
+// ══════════ TABS CONTROLLER ══════════
 function goToTab(tab) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('page-' + tab).classList.add('active');
-    document.getElementById('tab-' + tab).classList.add('active');
+    
+    const targetPage = document.getElementById('page-' + tab);
+    const targetTab = document.getElementById('tab-' + tab);
+    
+    if(targetPage) targetPage.classList.add('active');
+    if(targetTab) targetTab.classList.add('active');
 }
 
-// ══════════ ADMIN ══════════
+// ══════════ CONTROLE ADMIN ══════════
 function verifierAdmin() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('admin') === 'oui') {
@@ -449,19 +558,22 @@ function verifierAdmin() {
         document.getElementById('admin-panel').classList.add('open');
         document.getElementById('github-panel').classList.add('open');
         document.getElementById('profile-edit-panel').classList.add('open');
-        // Pré-remplir config GH si existante
+        
         if (ghConfig.token) document.getElementById('gh-token').value = ghConfig.token;
-        if (ghConfig.user) document.getElementById('gh-user').value = ghConfig.user;
-        if (ghConfig.repo) document.getElementById('gh-repo').value = ghConfig.repo;
+        document.getElementById('gh-user').value = ghConfig.user || "";
+        document.getElementById('gh-repo').value = ghConfig.repo || "";
         if (ghConfig.token) updateGHStatus(true);
-        // Pré-remplir formulaire profil
+        
         chargerFormulaireProfil();
     }
 }
 
 function toggleAdmin() {
     const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') !== 'oui') { showToast('Ajoute ?admin=oui dans l\'URL', 'error'); return; }
+    if (params.get('admin') !== 'oui') { 
+        showToast('Ajoute ?admin=oui à la fin de l\'URL pour activer le bouton', 'error'); 
+        return; 
+    }
     adminMode = !adminMode;
     document.getElementById('admin-panel').classList.toggle('open', adminMode);
     document.getElementById('github-panel').classList.toggle('open', adminMode);
@@ -470,9 +582,10 @@ function toggleAdmin() {
     document.getElementById('auth-btn').textContent = adminMode ? '✓ Admin' : 'Admin';
     document.getElementById('status-tag').textContent = adminMode ? 'Mode Admin' : 'Visiteur';
     afficherProjets();
+    afficherProfil();
 }
 
-// ══════════ GITHUB ══════════
+// ══════════ CONFIG GITHUB (WEB UI) ══════════
 function sauvegarderConfigGH() {
     const token = document.getElementById('gh-token').value.trim();
     const user  = document.getElementById('gh-user').value.trim();
@@ -481,13 +594,16 @@ function sauvegarderConfigGH() {
     ghConfig = { token, user, repo };
     localStorage.setItem('ghConfig', JSON.stringify(ghConfig));
     updateGHStatus(true);
-    showToast('GitHub configuré !');
+    showToast('Configuration sauvegardée localement !');
+    init();
 }
 
 function updateGHStatus(connected) {
     const badge = document.getElementById('gh-status-badge');
-    badge.textContent = connected ? '● Connecté' : 'Non configuré';
-    badge.className = 'gh-status ' + (connected ? 'connected' : 'disconnected');
+    if(badge) {
+        badge.textContent = connected ? '● Configuré' : 'Non configuré';
+        badge.className = 'gh-status ' + (connected ? 'connected' : 'disconnected');
+    }
 }
 
 async function getFileSHA(filename) {
@@ -500,14 +616,20 @@ async function getFileSHA(filename) {
 }
 
 async function sauvegarderSurGitHub() {
-    if (!ghConfig.token || !ghConfig.user || !ghConfig.repo) return false;
+    localStorage.setItem('mesProjets', JSON.stringify(projets));
+    localStorage.setItem('monProfil', JSON.stringify(profil));
+
+    if (!ghConfig.token || !ghConfig.user || !ghConfig.repo) {
+        showToast('Données sauvées localement (GitHub déconnecté).');
+        return false;
+    }
 
     const payload = { projets, profil };
     const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
 
     try {
         const sha = await getFileSHA(DATA_FILE);
-        const body = { message: `Update portfolio data — ${new Date().toLocaleString('fr-FR')}`, content };
+        const body = { message: `Update portfolio via web manager`, content };
         if (sha) body.sha = sha;
 
         const res = await fetch(`https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${DATA_FILE}`, {
@@ -516,246 +638,120 @@ async function sauvegarderSurGitHub() {
             body: JSON.stringify(body)
         });
 
-        return res.ok;
+        if(res.ok) {
+            showToast('Synchronisé avec GitHub avec succès !');
+            return true;
+        } else {
+            showToast('Erreur lors du push GitHub.', 'error');
+            return false;
+        }
     } catch(e) {
+        showToast('Erreur réseau GitHub.', 'error');
         return false;
     }
 }
 
-async function chargerDepuisGitHub() {
-    try {
-        const url = `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${DATA_FILE}`;
-        const res = await fetch(url, { headers: { 'Authorization': `token ${ghConfig.token}`, 'Accept': 'application/vnd.github.v3+json' } });
-        if (!res.ok) {
-            // Fichier pas encore créé, utiliser localStorage
-            projets = JSON.parse(localStorage.getItem('mesProjets') || '[]');
-            if (!projets.length) projets = [{ titre: "Mon premier site", desc: "Un site web statique pour apprendre les bases.", tech: "HTML, CSS", cat: "Web", link: "" }];
-            profil = JSON.parse(localStorage.getItem('monProfil') || '{}');
-            return;
-        }
-        const data = await res.json();
-        const decoded = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-        projets = decoded.projets || [];
-        profil  = decoded.profil  || {};
-        updateGHStatus(true);
-    } catch(e) {
-        projets = JSON.parse(localStorage.getItem('mesProjets') || '[]');
-        profil  = JSON.parse(localStorage.getItem('monProfil') || '{}');
-    }
-}
-
-async function sauvegarderTout() {
-    // Toujours sauvegarder en local
-    localStorage.setItem('mesProjets', JSON.stringify(projets));
-    localStorage.setItem('monProfil', JSON.stringify(profil));
-
-    // Sauvegarder sur GitHub si configuré
-    if (ghConfig.token) {
-        showToast('<span class="spinner"></span>Sauvegarde GitHub...', 'saving');
-        const ok = await sauvegarderSurGitHub();
-        showToast(ok ? '✓ Sauvegardé sur GitHub !' : '⚠ Sauvegarde locale (GitHub KO)', ok ? '' : 'error');
-    } else {
-        showToast('Sauvegardé en local');
-    }
-}
-
-// ══════════ PROJETS ══════════
-function afficherProjets() {
-    const container = document.getElementById('projects-container');
-    const countLabel = document.getElementById('count-label');
-    container.innerHTML = '';
-    countLabel.textContent = projets.length + ' projet' + (projets.length !== 1 ? 's' : '');
-
-    if (!projets.length) {
-        container.innerHTML = `<div class="empty-state"><div class="icon">📂</div><p>Aucun projet — ajoutez le premier !</p></div>`;
-        return;
-    }
-
-    projets.forEach((p, i) => {
-        const techs = (p.tech || '').split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('');
-        const actions = adminMode ? `<div class="card-actions"><button class="btn-icon edit" onclick="ouvrirEdit(${i})" title="Modifier">✏</button><button class="btn-icon" onclick="supprimerProjet(${i})" title="Supprimer">✕</button></div>` : '';
-        const link = p.link ? `<a href="${p.link}" target="_blank" style="display:inline-block;margin-top:14px;font-family:'Space Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:0.05em;text-decoration:none;">↗ GitHub</a>` : '';
-        container.innerHTML += `
-            <div class="project-card" style="animation-delay:${i * 0.06}s">
-                ${actions}
-                <div class="card-cat">${(p.cat || 'Autre').toUpperCase()}</div>
-                <div class="card-title">${p.titre}</div>
-                <div class="card-desc">${p.desc}</div>
-                <div class="tech-row">${techs}</div>
-                ${link}
-            </div>`;
-    });
-}
-
-async function ajouterProjet() {
+// ══════════ FORMULAIRES DE PROJETS ══════════
+function ajouterProjet() {
     const titre = document.getElementById('proj-title').value.trim();
-    const desc  = document.getElementById('proj-desc').value.trim();
-    const tech  = document.getElementById('proj-tech').value.trim();
-    const cat   = document.getElementById('proj-cat').value;
-    const link  = document.getElementById('proj-link').value.trim();
-    if (!titre || !desc || !tech) { showToast('Remplis tous les champs obligatoires *', 'error'); return; }
-    projets.push({ titre, desc, tech, cat, link });
-    afficherProjets();
+    const tech = document.getElementById('proj-tech').value.trim();
+    const desc = document.getElementById('proj-desc').value.trim();
+    const cat = document.getElementById('proj-cat').value;
+    const link = document.getElementById('proj-link').value.trim();
+
+    if(!titre || !tech || !desc) { showToast('Champs obligatoires manquants', 'error'); return; }
+
+    projets.push({ titre, tech, desc, cat, link });
     resetForm();
-    await sauvegarderTout();
-}
-
-function resetForm() {
-    ['proj-title','proj-desc','proj-tech','proj-link'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('proj-cat').value = 'Web';
-}
-
-async function supprimerProjet(i) {
-    if (!confirm('Supprimer ce projet ?')) return;
-    projets.splice(i, 1);
     afficherProjets();
-    await sauvegarderTout();
+    sauvegarderSurGitHub();
 }
 
-function ouvrirEdit(i) {
-    editIndex = i;
-    const p = projets[i];
+function supprimerProjet(idx) {
+    if(confirm('Supprimer ce projet ?')) {
+        projets.splice(idx, 1);
+        afficherProjets();
+        sauvegarderSurGitHub();
+    }
+}
+
+function openModal(idx) {
+    editIndex = idx;
+    const p = projets[idx];
     document.getElementById('m-title').value = p.titre;
-    document.getElementById('m-desc').value  = p.desc;
-    document.getElementById('m-tech').value  = p.tech;
-    document.getElementById('m-cat').value   = p.cat || 'Autre';
-    document.getElementById('m-link').value  = p.link || '';
+    document.getElementById('m-tech').value = p.tech;
+    document.getElementById('m-desc').value = p.desc;
+    document.getElementById('m-cat').value = p.cat || 'Web';
+    document.getElementById('m-link').value = p.link || '';
     document.getElementById('edit-modal').classList.add('open');
 }
 
-function closeModal() { document.getElementById('edit-modal').classList.remove('open'); editIndex = null; }
-
-async function sauvegarderEdit() {
-    if (editIndex === null) return;
-    projets[editIndex] = { titre: document.getElementById('m-title').value.trim(), desc: document.getElementById('m-desc').value.trim(), tech: document.getElementById('m-tech').value.trim(), cat: document.getElementById('m-cat').value, link: document.getElementById('m-link').value.trim() };
-    closeModal();
-    afficherProjets();
-    await sauvegarderTout();
+function closeModal() {
+    document.getElementById('edit-modal').classList.remove('open');
+    editIndex = null;
 }
 
-// ══════════ PROFIL ══════════
-function afficherProfil() {
-    const d = document.getElementById('profile-display');
-    const p = profil;
-
-    if (!p || !p.nom) {
-        d.innerHTML = `
-            <div style="text-align:center;padding:60px 20px;color:var(--muted);">
-                <div style="font-size:36px;margin-bottom:16px;">👤</div>
-                <p style="font-size:15px;font-weight:300;margin-bottom:20px;">Aucun profil configuré</p>
-                ${adminMode ? `<button class="btn-primary" onclick="goToTab('profil');document.getElementById('profile-edit-panel').classList.add('open')">Créer mon profil →</button>` : ''}
-            </div>`;
-        return;
+function sauvegarderEdit() {
+    if(editIndex !== null) {
+        projets[editIndex] = {
+            titre: document.getElementById('m-title').value.trim(),
+            tech: document.getElementById('m-tech').value.trim(),
+            desc: document.getElementById('m-desc').value.trim(),
+            cat: document.getElementById('m-cat').value,
+            link: document.getElementById('m-link').value.trim()
+        };
+        closeModal();
+        afficherProjets();
+        sauvegarderSurGitHub();
     }
-
-    const photoHTML = p.photo
-        ? `<img src="${p.photo}" alt="${p.nom}" style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:2px solid rgba(124,111,247,0.4);">`
-        : `<div style="width:100px;height:100px;border-radius:50%;background:var(--surface2);border:2px solid rgba(124,111,247,0.3);display:flex;align-items:center;justify-content:center;font-size:36px;">${(p.nom||'?')[0].toUpperCase()}</div>`;
-
-    const skillsHTML = (p.skills || []).map((s, idx) => {
-        const cls = idx % 3 === 0 ? 'skill-tag' : idx % 3 === 1 ? 'skill-tag lang' : 'skill-tag tool';
-        return `<span class="${cls}">${s}</span>`;
-    }).join('');
-
-    const socials = [];
-    if (p.github)   socials.push(`<a class="social-link" href="${p.github}" target="_blank">⌥ GitHub</a>`);
-    if (p.linkedin) socials.push(`<a class="social-link" href="${p.linkedin}" target="_blank">in LinkedIn</a>`);
-    if (p.email)    socials.push(`<a class="social-link" href="mailto:${p.email}">@ Email</a>`);
-    if (p.site)     socials.push(`<a class="social-link" href="${p.site}" target="_blank">↗ Site</a>`);
-
-    const editBtn = adminMode ? `<button class="btn-secondary" style="margin-top:20px;font-size:11px;padding:8px 16px;" onclick="document.getElementById('profile-edit-panel').classList.toggle('open')">✏ Modifier le profil</button>` : '';
-
-    d.innerHTML = `
-        <div class="profile-hero">
-            <div class="avatar-wrap">${photoHTML}</div>
-            <div class="profile-info">
-                <div class="profile-name">${p.nom}</div>
-                ${p.titre ? `<div class="profile-title">${p.titre}</div>` : ''}
-                ${p.bio ? `<div class="profile-bio">${p.bio}</div>` : ''}
-                <div class="social-row">${socials.join('')}</div>
-                ${editBtn}
-            </div>
-        </div>
-        ${skillsHTML ? `
-        <div class="section-block">
-            <div class="section-header"><span class="section-title">// Compétences</span></div>
-            <div class="skills-grid">${skillsHTML}</div>
-        </div>` : ''}
-    `;
 }
 
+function resetForm() {
+    document.getElementById('proj-title').value = '';
+    document.getElementById('proj-tech').value = '';
+    document.getElementById('proj-desc').value = '';
+    document.getElementById('proj-link').value = '';
+}
+
+// ══════════ SECTION PROFIL EDIT ══════════
 function chargerFormulaireProfil() {
-    const p = profil;
-    document.getElementById('edit-nom').value      = p.nom || '';
-    document.getElementById('edit-titre').value    = p.titre || '';
-    document.getElementById('edit-bio').value      = p.bio || '';
-    document.getElementById('edit-skills').value   = (p.skills || []).join(', ');
-    document.getElementById('edit-github').value   = p.github || '';
-    document.getElementById('edit-linkedin').value = p.linkedin || '';
-    document.getElementById('edit-email').value    = p.email || '';
-    document.getElementById('edit-site').value     = p.site || '';
-    document.getElementById('edit-photo').value    = p.photo || '';
-    if (p.photo) previewPhotoURL(p.photo);
+    document.getElementById('edit-nom').value = profil.nom || '';
+    document.getElementById('edit-titre').value = profil.titre || '';
+    document.getElementById('edit-bio').value = profil.bio || '';
+    document.getElementById('edit-skills').value = profil.skills ? profil.skills.join(', ') : '';
+    document.getElementById('edit-github').value = profil.github || '';
+    document.getElementById('edit-linkedin').value = profil.linkedin || '';
+    document.getElementById('edit-email').value = profil.email || '';
+    document.getElementById('edit-site').value = profil.site || '';
+    document.getElementById('edit-photo').value = profil.photo || '';
 }
 
-async function sauvegarderProfil() {
+function sauvegarderProfil() {
     profil = {
-        nom:      document.getElementById('edit-nom').value.trim(),
-        titre:    document.getElementById('edit-titre').value.trim(),
-        bio:      document.getElementById('edit-bio').value.trim(),
-        skills:   document.getElementById('edit-skills').value.split(',').map(s => s.trim()).filter(Boolean),
-        github:   document.getElementById('edit-github').value.trim(),
+        nom: document.getElementById('edit-nom').value.trim(),
+        titre: document.getElementById('edit-titre').value.trim(),
+        bio: document.getElementById('edit-bio').value.trim(),
+        skills: document.getElementById('edit-skills').value.split(',').map(s => s.trim()).filter(s => s.length > 0),
+        github: document.getElementById('edit-github').value.trim(),
         linkedin: document.getElementById('edit-linkedin').value.trim(),
-        email:    document.getElementById('edit-email').value.trim(),
-        site:     document.getElementById('edit-site').value.trim(),
-        photo:    document.getElementById('edit-photo').value.trim() || profil.photo || '',
+        email: document.getElementById('edit-email').value.trim(),
+        site: document.getElementById('edit-site').value.trim(),
+        photo: document.getElementById('edit-photo').value.trim()
     };
-    if (profil.nom) document.getElementById('nav-logo').textContent = profil.nom.toUpperCase().split(' ')[0] + '.DEV';
     afficherProfil();
-    await sauvegarderTout();
+    sauvegarderSurGitHub();
 }
 
-function annulerEditProfil() {
-    document.getElementById('profile-edit-panel').classList.remove('open');
-    chargerFormulaireProfil();
-}
-
-// ══════════ PHOTO ══════════
-function handlePhotoUpload(event) {
-    const file = event.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        const dataURL = e.target.result;
-        document.getElementById('edit-photo').value = dataURL;
-        previewPhotoURL(dataURL);
-        if (!profil) profil = {};
-        profil.photo = dataURL;
-    };
-    reader.readAsDataURL(file);
-}
-
-function previewPhotoURL(url) {
-    if (!url) return;
-    const img = document.getElementById('photo-preview-img');
-    const placeholder = document.getElementById('photo-placeholder');
-    img.src = url;
-    img.style.display = 'block';
-    placeholder.style.display = 'none';
-}
-
-// ══════════ TOAST ══════════
-let toastTimer;
-function showToast(msg, type = '') {
+// ══════════ UTILS ══════════
+function showToast(msg, type = 'success') {
     const t = document.getElementById('toast');
-    t.innerHTML = msg;
-    t.className = 'toast show' + (type ? ' ' + type : '');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+    t.textContent = msg;
+    t.className = 'toast show ' + (type === 'error' ? 'error' : '');
+    setTimeout(() => t.classList.remove('show'), 3000);
 }
 
-// ══════════ START ══════════
-init();
+// Lancement automatique au chargement
+window.onload = init;
 </script>
 </body>
 </html>
