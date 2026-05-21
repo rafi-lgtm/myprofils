@@ -136,9 +136,6 @@
 </div>
 
 <script>
-// Le fichier étant local et public, plus besoin d'indiquer l'utilisateur ni le dépôt ici.
-const DATA_FILE = './data.json';
-
 let projets = [];
 let profil = {};
 
@@ -149,7 +146,7 @@ async function init() {
     if (!dataChargee) {
         const container = document.getElementById('projects-container');
         if (container) {
-            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger le fichier data.json. Vérifie qu'il est bien orthographié et dans le même dossier.</p></div>`;
+            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de lire le fichier sur GitHub. Vérifie que le dépôt et le fichier data.json sont bien publics.</p></div>`;
         }
     }
 
@@ -162,15 +159,22 @@ async function init() {
     }
 }
 
-// ══════════ LECTURE DU JSON LOCAL SANS CACHE ══════════
+// ══════════ LECTURE BRUTE SUR LE STOCKAGE SANS PASSER PAR LE CACHE PAGES ══════════
 async function chargerDonnees() {
     try {
-        // Le timestamp force le navigateur à récupérer la version fraîche à chaque rechargement
         const antiCache = new Date().getTime();
-        const url = `${DATA_FILE}?t=${antiCache}`;
         
-        const res = await fetch(url, { cache: "no-store" }); 
-        if (!res.ok) return false;
+        // On cible directement le serveur de fichiers brut de GitHub (mis à jour à la seconde près)
+        const url = `https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json?t=${antiCache}`;
+        
+        let res = await fetch(url, { cache: "no-store" }); 
+        
+        if (!res.ok) {
+            // Secours au cas où la branche principale s'appelle master au lieu de main
+            const urlMaster = `https://raw.githubusercontent.com/rafi-lgtm/myprofils/master/data.json?t=${antiCache}`;
+            res = await fetch(urlMaster, { cache: "no-store" });
+            if (!res.ok) return false;
+        }
         
         const data = await res.json();
         projets = data.projets || [];
