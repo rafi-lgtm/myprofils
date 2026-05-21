@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio</title>
+    <title>Portfolio en temps réel</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -37,8 +37,9 @@
         /* NAV */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
         .logo { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-        .btn-nav-profil { font-family: 'Space Mono', monospace; font-size: 11px; background: transparent; color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 6px 14px; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em; transition: all 0.2s; }
-        .btn-nav-profil:hover { background: rgba(62,207,178,0.1); border-color: var(--accent2); }
+        .live-indicator { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: rgba(62,207,178,0.08); border: 1px solid rgba(62,207,178,0.2); padding: 4px 10px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }
+        .live-dot { width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
 
         /* TABS */
         .tabs { display: flex; gap: 4px; margin-bottom: 48px; border-bottom: 1px solid var(--border); }
@@ -48,12 +49,10 @@
 
         /* PAGE VIEWS */
         .page { display: none; }
-        .page.active { display: block; animation: fadeUp 0.3s ease; }
-        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .page.active { display: block; }
 
         /* PROFILE PAGE */
         .profile-hero { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; margin-bottom: 56px; }
-        .avatar-wrap { position: relative; }
         .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(124,111,247,0.4); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 36px; overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
         .profile-info { padding-top: 8px; }
@@ -75,7 +74,7 @@
 
         /* PROJECTS */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
-        .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: border-color 0.25s, transform 0.25s; animation: fadeUp 0.4s ease both; }
+        .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: border-color 0.25s, transform 0.25s; }
         .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.25s; }
         .project-card:hover { border-color: rgba(124,111,247,0.3); transform: translateY(-3px); }
         .project-card:hover::before { opacity: 1; }
@@ -85,7 +84,6 @@
         .tech-row { display: flex; flex-wrap: wrap; gap: 6px; }
         .tech-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: rgba(62,207,178,0.08); border: 1px solid rgba(62,207,178,0.2); padding: 3px 10px; border-radius: 4px; letter-spacing: 0.04em; }
 
-        /* EMPTY STATE */
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
         .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
 
@@ -108,7 +106,7 @@
 
     <nav>
         <div class="logo" id="nav-logo">PORTFOLIO.DEV</div>
-        <button class="btn-nav-profil" onclick="goToTab('profil')">Profil</button>
+        <div class="live-indicator"><div class="live-dot"></div>LIVE MONITOR</div>
     </nav>
 
     <div class="tabs">
@@ -144,24 +142,19 @@ const CONFIG = {
     repo: "myprofils"     
 };
 const DATA_FILE = 'data.json';
+const DELAI_VERIFICATION = 5000; // Vérification toutes les 5 secondes (5000ms)
 
 let projets = [];
 let profil = {};
+let dernierJsonString = ""; // Garde en mémoire l'ancienne version pour éviter de tout faire clignoter
 
-// ══════════ INIT ══════════
+// ══════════ INIT & BOUCLE LIVE ══════════
 async function init() {
-    // Essaye de charger depuis la branche principale (main ou master)
-    let dataChargee = await chargerDepuisGitHubPublic();
-
-    if (!dataChargee) {
-        const container = document.getElementById('projects-container');
-        if (container) {
-            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger data.json. Vérifie que ton application Python a bien poussé le fichier sur GitHub.</p></div>`;
-        }
-    }
-
-    afficherProjets();
-    afficherProfil();
+    // Premier chargement immédiat au démarrage
+    await verifierMise AJour();
+    
+    // Lance la surveillance en arrière-plan toutes les 5 secondes
+    setInterval(verifierMise AJour, DELAI_VERIFICATION);
     
     const footerDate = document.getElementById('footer-date');
     if (footerDate) {
@@ -169,26 +162,40 @@ async function init() {
     }
 }
 
-// ══════════ LECTURE DU JSON SANS CONFIGURATION REQUISE ══════════
-async function chargerDepuisGitHubPublic() {
+// ══════════ SURVEILLANCE AUTOMATIQUE ══════════
+async function verifierMise AJour() {
     try {
-        const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}`;
-        let res = await fetch(url, { cache: 'no-store' }); 
+        const versionUnique = new Date().getTime();
         
-        if (!res.ok) {
-            // Test de secours sur la branche master si la branche main n'existe pas
-            const urlMaster = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/master/${DATA_FILE}`;
-            res = await fetch(urlMaster, { cache: 'no-store' });
-            if (!res.ok) return false;
+        // IMPORTANT : Utilise l'URL GitHub Pages si ton dépôt est privé
+        const url = `https://rafi-lgtm.github.io/myprofils/${DATA_FILE}?t=${versionUnique}`;
+        
+        // (Alternative si ton dépôt redevient public un jour) :
+        // const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}?t=${versionUnique}`;
+        
+        const res = await fetch(url); 
+        if (!res.ok) return;
+        
+        const texteBrut = await res.text();
+        
+        // Si le texte du fichier n'a pas bougé, on ne fait rien
+        if (texteBrut === dernierJsonString) {
+            return; 
         }
         
-        const data = await res.json();
+        // Si c'est différent, il y a du nouveau ! On enregistre et on met à jour le site
+        dernierJsonString = texteBrut;
+        const data = JSON.parse(texteBrut);
+        
         projets = data.projets || [];
         profil = data.profil || {};
-        return true;
+        
+        console.log("🔄 Données mises à jour automatiquement !");
+        afficherProjets();
+        afficherProfil();
+        
     } catch (e) {
-        console.error("Erreur de lecture du JSON :", e);
-        return false;
+        console.error("Erreur lors de la vérification auto :", e);
     }
 }
 
@@ -202,7 +209,7 @@ function afficherProjets() {
     if (countLabel) countLabel.textContent = `${projets.length} projet${projets.length > 1 ? 's' : ''}`;
 
     if (!projets || projets.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="icon">📂</div><p>Aucun projet trouvé dans le fichier data.json.</p></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="icon">📂</div><p>Aucun projet trouvé dans data.json.</p></div>`;
         return;
     }
 
@@ -211,7 +218,7 @@ function afficherProjets() {
         card.className = 'project-card';
         
         let linkIcon = '';
-        if (p.link) {
+        if (p.link && p.link.startsWith('http')) {
             linkIcon = `<a href="${p.link}" target="_blank" class="social-link" style="margin-top:12px; display:inline-flex; width:max-content">🔗 Lien projet</a>`;
         }
 
@@ -245,7 +252,7 @@ function afficherProfil() {
     if (logoElement) logoElement.textContent = nom.toUpperCase().split(' ')[0] + '.DEV';
 
     let photoHTML = `<div class="avatar">👨‍💻</div>`;
-    if (photo) {
+    if (photo && photo.startsWith('http')) {
         photoHTML = `<div class="avatar"><img src="${photo}" alt="Avatar"></div>`;
     }
 
@@ -261,9 +268,9 @@ function afficherProfil() {
 
     let linksHTML = '';
     if (email) linksHTML += `<a href="mailto:${email}" class="social-link">📧 Email</a>`;
-    if (github) linksHTML += `<a href="${github}" target="_blank" class="social-link">🐙 GitHub</a>`;
-    if (linkedin) linksHTML += `<a href="${linkedin}" target="_blank" class="social-link">💼 LinkedIn</a>`;
-    if (site) linksHTML += `<a href="${site}" target="_blank" class="social-link">🌐 Site</a>`;
+    if (github && github.startsWith('http')) linksHTML += `<a href="${github}" target="_blank" class="social-link">🐙 GitHub</a>`;
+    if (linkedin && linkedin.startsWith('http')) linksHTML += `<a href="${linkedin}" target="_blank" class="social-link">💼 LinkedIn</a>`;
+    if (site && site.startsWith('http')) linksHTML += `<a href="${site}" target="_blank" class="social-link">🌐 Site</a>`;
 
     display.innerHTML = `
         <div class="profile-hero">
