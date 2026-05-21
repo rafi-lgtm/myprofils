@@ -17,7 +17,6 @@
             --accent2: #3ecfb2;
             --text: #f0f0f8;
             --muted: #888899;
-            --overlay: rgba(0, 0, 0, 0.8);
         }
 
         [data-theme="light"] {
@@ -29,7 +28,6 @@
             --accent2: #14b8a6;
             --text: #1e1e2f;
             --muted: #64748b;
-            --overlay: rgba(0, 0, 0, 0.4);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -72,8 +70,13 @@
 
         /* PROFIL */
         .profile-hero { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; margin-bottom: 56px; }
+        .avatar-wrap { display: flex; flex-direction: column; align-items: center; gap: 12px; }
         .avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent); background: var(--surface2); display: flex; align-items: center; justify-content: center; font-size: 36px; overflow: hidden; }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .btn-upload { font-family: 'Space Mono', monospace; font-size: 10px; background: var(--surface); color: var(--muted); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; cursor: pointer; }
+        .btn-upload:hover { color: var(--text); border-color: var(--accent); }
+
         .profile-info { padding-top: 8px; }
         .profile-name { font-size: 32px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 6px; }
         .profile-title { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--accent); letter-spacing: 0.08em; margin-bottom: 14px; }
@@ -88,29 +91,24 @@
         /* CARDS */
         .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
         .section-title { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
-        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
         
-        .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px; position: relative; overflow: hidden; transition: all 0.25s; cursor: pointer; }
-        .project-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent2)); opacity: 0; transition: opacity 0.25s; }
+        .project-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; transition: all 0.25s; display: flex; flex-direction: column; }
         .project-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-        .project-card:hover::before { opacity: 1; }
         
-        .card-cat { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 12px; }
-        .card-title { font-size: 17px; font-weight: 600; margin-bottom: 10px; }
-        .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .tech-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+        .project-img-container { width: 100%; height: 160px; background: var(--surface2); overflow: hidden; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); }
+        .project-img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .project-img-placeholder { font-size: 32px; opacity: 0.4; }
+
+        .project-card-content { padding: 24px; flex-grow: 1; display: flex; flex-direction: column; }
+        .card-cat { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
+        .card-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+        .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; flex-grow: 1; white-space: pre-wrap; }
+        .tech-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .tech-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: var(--surface2); padding: 3px 10px; border-radius: 4px; border: 1px solid var(--border); }
 
-        /* ══════════ MODALE (POPUP) ══════════ */
-        .modal { position: fixed; inset: 0; background: var(--overlay); display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; z-index: 1000; transition: opacity 0.3s ease; padding: 20px; }
-        .modal.active { opacity: 1; pointer-events: all; }
-        .modal-content { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 550px; padding: 32px; position: relative; transform: scale(0.95); transition: transform 0.3s ease; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
-        .modal.active .modal-content { transform: scale(1); }
-        .modal-close { position: absolute; top: 20px; right: 20px; background: transparent; border: none; color: var(--muted); font-size: 22px; cursor: pointer; }
-        .modal-close:hover { color: var(--text); }
-        .modal-cat { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
-        .modal-title { font-size: 24px; font-weight: 700; margin-bottom: 16px; }
-        .modal-desc { font-size: 15px; color: var(--muted); line-height: 1.7; margin-bottom: 24px; white-space: pre-wrap; }
+        .helper-box { background: var(--surface2); padding: 12px; border-radius: 8px; font-size: 11px; font-family: monospace; color: var(--muted); margin-top: 15px; border: 1px dashed var(--border); }
+        .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
 
         footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .footer-text { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); }
@@ -154,22 +152,10 @@
     </footer>
 </div>
 
-<div class="modal" id="project-modal" onclick="closeModal(event)">
-    <div class="modal-content">
-        <button class="modal-close" onclick="document.getElementById('project-modal').classList.remove('active')">&times;</button>
-        <div class="modal-cat" id="modal-cat"></div>
-        <div class="modal-title" id="modal-title"></div>
-        <div class="modal-desc" id="modal-desc"></div>
-        <div class="tech-row" id="modal-tech"></div>
-        <div id="modal-link-container" style="margin-top: 24px;"></div>
-    </div>
-</div>
-
 <script>
 let projets = [];
 let profil = {};
 
-// ══════════ THÈME CLAIR / SOMBRE ══════════
 function toggleTheme() {
     const currentTheme = document.documentElement.getAttribute('data-theme');
     const targetTheme = currentTheme === 'light' ? 'dark' : 'light';
@@ -178,12 +164,10 @@ function toggleTheme() {
     localStorage.setItem('theme', targetTheme);
 }
 
-// Charger le thème sauvegardé au démarrage
 const savedTheme = localStorage.getItem('theme') || 'dark';
 document.documentElement.setAttribute('data-theme', savedTheme);
 document.getElementById('theme-toggle').textContent = savedTheme === 'light' ? '☀️' : '🌙';
 
-// ══════════ INIT DATA ══════════
 async function init() {
     let dataChargee = await chargerDonnees();
     if (!dataChargee) {
@@ -211,56 +195,59 @@ async function chargerDonnees() {
     } catch (e) { return false; }
 }
 
-// ══════════ AFFICHAGE PROJETS ══════════
 function afficherProjets() {
     const container = document.getElementById('projects-container');
     container.innerHTML = '';
     document.getElementById('count-label').textContent = `${projets.length} projet${projets.length > 1 ? 's' : ''}`;
 
-    projets.forEach((p, index) => {
+    if(projets.length === 0) {
+        container.innerHTML = `<div class="empty-state">📂 Aucun projet à afficher.</div>`;
+        return;
+    }
+
+    projets.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'project-card';
-        card.onclick = () => openModal(index); // Ouvre le détail au clic !
+
+        // Zone Image du projet
+        let imgHTML = `<div class="project-img-placeholder">💻</div>`;
+        if (p.photo && p.photo.length > 10) {
+            imgHTML = `<img src="${p.photo}" alt="${p.titre}">`;
+        }
 
         const tagsHTML = p.tech ? p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
 
+        let linkHTML = '';
+        if (p.link && (p.link.startsWith('http') || p.link.includes('.'))) {
+            let realLink = p.link.startsWith('http') ? p.link : `https://${p.link}`;
+            linkHTML = `<a href="${realLink}" target="_blank" class="social-link" style="margin-top:auto; display:inline-flex; width:max-content; color:var(--accent2); border-color:rgba(62,207,178,0.3)">🔗 Lien Projet</a>`;
+        }
+
         card.innerHTML = `
-            <div class="card-cat">${p.cat || 'Web'}</div>
-            <div class="card-title">${p.titre || 'Sans titre'}</div>
-            <div class="card-desc">${p.desc || 'Cliquez pour voir les détails.'}</div>
-            <div class="tech-row">${tagsHTML}</div>
+            <div class="project-img-container">${imgHTML}</div>
+            <div class="project-card-content">
+                <div class="card-cat">${p.cat || 'Web'}</div>
+                <div class="card-title">${p.titre || 'Sans titre'}</div>
+                <div class="card-desc">${p.desc || 'Pas de description.'}</div>
+                <div class="tech-row">${tagsHTML}</div>
+                ${linkHTML}
+            </div>
         `;
         container.appendChild(card);
     });
 }
 
-// ══════════ GESTION POPUP MODALE ══════════
-function openModal(index) {
-    const p = projets[index];
-    document.getElementById('modal-cat').textContent = p.cat || 'WEB';
-    document.getElementById('modal-title').textContent = p.titre || 'Sans titre';
-    document.getElementById('modal-desc').textContent = p.desc || 'Pas de description supplémentaire.';
-    
-    const techContainer = document.getElementById('modal-tech');
-    techContainer.innerHTML = p.tech ? p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
-
-    const linkContainer = document.getElementById('modal-link-container');
-    linkContainer.innerHTML = '';
-    if (p.link && (p.link.startsWith('http') || p.link.includes('.'))) {
-        let realLink = p.link.startsWith('http') ? p.link : `https://${p.link}`;
-        linkContainer.innerHTML = `<a href="${realLink}" target="_blank" class="social-link" style="display:inline-flex; color: var(--accent2); border-color: var(--accent2)">🔗 Visiter le projet</a>`;
-    }
-
-    document.getElementById('project-modal').classList.add('active');
+function handleAvatarUpload(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        document.getElementById('avatar-img-element').src = e.target.result;
+        document.getElementById('base64-helper').style.display = 'block';
+    };
+    reader.readAsDataURL(file);
 }
 
-function closeModal(event) {
-    if (event.target.id === 'project-modal') {
-        document.getElementById('project-modal').classList.remove('active');
-    }
-}
-
-// ══════════ AFFICHAGE PROFIL ══════════
 function afficherProfil() {
     const display = document.getElementById('profile-display');
     if (!display) return;
@@ -268,8 +255,8 @@ function afficherProfil() {
     const nom = profil.nom || "Mon Portfolio";
     document.getElementById('nav-logo').textContent = nom.toUpperCase().split(' ')[0] + '.DEV';
 
-    let photoHTML = `<div class="avatar">👨‍💻</div>`;
-    if (profil.photo && profil.photo.startsWith('http')) photoHTML = `<div class="avatar"><img src="${profil.photo}"></div>`;
+    let photoSrc = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23888899' d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10s10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3s-3-1.34-3-3s1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22c.03-1.99 4-3.08 6-3.08s5.97 1.09 6 3.08c-1.29 1.94-3.5 3.22-6 3.22z'/%3E%3C/svg%3E";
+    if (profil.photo && profil.photo.length > 10) photoSrc = profil.photo;
 
     let skillsHTML = '';
     if (profil.skills && profil.skills.length > 0) {
@@ -279,9 +266,27 @@ function afficherProfil() {
     let linksHTML = '';
     if (profil.email) linksHTML += `<a href="mailto:${profil.email}" class="social-link">📧 Email</a>`;
     if (profil.github) linksHTML += `<a href="${profil.github.startsWith('http') ? profil.github : 'https://github.com/'+profil.github}" target="_blank" class="social-link">🐙 GitHub</a>`;
-    if (profil.linkedin) linksHTML += `<a href="${profil.linkedin.startsWith('http') ? profil.linkedin : 'https://linkedin.com/in/'+profil.linkedin}" target="_blank" class="social-link">💼 LinkedIn</a>`;
+    if (profil.instagram) linksHTML += `<a href="${profil.instagram.startsWith('http') ? profil.instagram : 'https://instagram.com/'+profil.instagram}" target="_blank" class="social-link">📸 Instagram</a>`;
 
-    display.innerHTML = `<div class="profile-hero">${photoHTML}<div><div class="profile-name">${nom}</div><div class="profile-title">${profil.titre || ''}</div><div class="profile-bio">${profil.bio || ''}</div><div class="social-row">${linksHTML}</div></div></div>${skillsHTML}`;
+    display.innerHTML = `
+        <div class="profile-hero">
+            <div class="avatar-wrap">
+                <div class="avatar"><img id="avatar-img-element" src="${photoSrc}"></div>
+                <input type="file" id="avatar-input" style="display:none" accept="image/*" onchange="handleAvatarUpload(event)">
+                <button class="btn-upload" onclick="document.getElementById('avatar-input').click()">📁 Choisir une photo</button>
+            </div>
+            <div>
+                <div class="profile-name">${nom}</div>
+                <div class="profile-title">${profil.titre || ''}</div>
+                <div class="profile-bio">${profil.bio || ''}</div>
+                <div class="social-row">${linksHTML}</div>
+                <div class="helper-box" id="base64-helper" style="display:none">
+                    <strong>Photo chargée en local !</strong> Lance ton script Python pour l'enregistrer partout.
+                </div>
+            </div>
+        </div>
+        ${skillsHTML}
+    `;
 }
 
 function goToTab(tab) {
