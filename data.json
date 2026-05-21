@@ -1,13 +1,5 @@
 {
-  "projets": [
-    {
-      "titre": "bonjour",
-      "tech": "es",
-      "desc": "dsfsef",
-      "cat": "Script / Automatisation",
-      "link": "slt"
-    }
-  ],
+  "projets": [],
   "profil": {
     "nom": "rafael",
     "titre": "le denn",
