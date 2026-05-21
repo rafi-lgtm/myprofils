@@ -16,8 +16,6 @@
             --accent2: #3ecfb2;
             --text: #f0f0f8;
             --muted: #888899;
-            --danger: #f76c6c;
-            --warn: #f7a84a;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: 'Sora', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
@@ -39,14 +37,8 @@
         /* NAV */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
         .logo { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-        .nav-right { display: flex; gap: 10px; align-items: center; }
-        .tag-status { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 5px 12px; border-radius: 100px; letter-spacing: 0.05em; }
-        .tag-status::before { content: '▸ '; }
-        .btn-nav { font-family: 'Space Mono', monospace; font-size: 11px; background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em; transition: all 0.2s; }
-        .btn-nav:hover { border-color: var(--accent); color: var(--accent); }
-        .btn-nav.active { background: var(--accent); color: white; border-color: var(--accent); }
-        .btn-nav.profile-btn { border-color: rgba(62,207,178,0.3); color: var(--accent2); }
-        .btn-nav.profile-btn:hover { background: rgba(62,207,178,0.1); border-color: var(--accent2); }
+        .btn-nav-profil { font-family: 'Space Mono', monospace; font-size: 11px; background: transparent; color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 6px 14px; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em; transition: all 0.2s; }
+        .btn-nav-profil:hover { background: rgba(62,207,178,0.1); border-color: var(--accent2); }
 
         /* TABS */
         .tabs { display: flex; gap: 4px; margin-bottom: 48px; border-bottom: 1px solid var(--border); }
@@ -92,65 +84,10 @@
         .card-desc { font-size: 14px; color: var(--muted); line-height: 1.65; font-weight: 300; margin-bottom: 18px; }
         .tech-row { display: flex; flex-wrap: wrap; gap: 6px; }
         .tech-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: rgba(62,207,178,0.08); border: 1px solid rgba(62,207,178,0.2); padding: 3px 10px; border-radius: 4px; letter-spacing: 0.04em; }
-        .card-actions { position: absolute; top: 14px; right: 14px; display: flex; gap: 6px; }
-        .btn-icon { width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.15s; }
-        .btn-icon:hover { border-color: var(--danger); color: var(--danger); }
-        .btn-icon.edit:hover { border-color: var(--accent); color: var(--accent); }
-
-        /* ADMIN PANEL */
-        #admin-panel { display: none; background: var(--surface); border: 1px solid rgba(124,111,247,0.25); border-radius: 12px; padding: 32px; margin-bottom: 48px; animation: fadeUp 0.3s ease; }
-        #admin-panel.open { display: block; }
-        .panel-title { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 24px; display: flex; align-items: center; gap: 10px; }
-        .panel-title::after { content: ''; flex: 1; height: 1px; background: rgba(124,111,247,0.2); }
-
-        /* GITHUB PANEL */
-        #github-panel { background: var(--surface); border: 1px solid rgba(62,207,178,0.2); border-radius: 12px; padding: 24px 28px; margin-bottom: 32px; display: none; }
-        #github-panel.open { display: block; animation: fadeUp 0.3s ease; }
-        .gh-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-        .gh-title { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; }
-        .gh-status { font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 10px; border-radius: 100px; }
-        .gh-status.connected { color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); }
-        .gh-status.disconnected { color: var(--muted); border: 1px solid var(--border); }
-        .gh-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-        .gh-save-btn { font-family: 'Space Mono', monospace; font-size: 11px; background: rgba(62,207,178,0.1); color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 10px 18px; border-radius: 8px; cursor: pointer; letter-spacing: 0.06em; transition: all 0.2s; white-space: nowrap; align-self: end; }
-        .gh-save-btn:hover { background: rgba(62,207,178,0.2); }
-
-        /* PROFILE EDIT PANEL */
-        #profile-edit-panel { display: none; background: var(--surface); border: 1px solid rgba(124,111,247,0.25); border-radius: 12px; padding: 32px; margin-bottom: 48px; }
-        #profile-edit-panel.open { display: block; animation: fadeUp 0.3s ease; }
-
-        /* FORMS */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-        .form-group { display: flex; flex-direction: column; gap: 6px; }
-        .form-group.full { grid-column: 1 / -1; }
-        label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
-        input, textarea, select { font-family: 'Sora', sans-serif; font-size: 14px; background: var(--surface2); color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 11px 14px; width: 100%; transition: border-color 0.2s; resize: none; outline: none; }
-        input:focus, textarea:focus, select:focus { border-color: rgba(124,111,247,0.5); }
-        input::placeholder, textarea::placeholder { color: var(--muted); opacity: 0.5; }
-        
-        .form-actions { display: flex; gap: 10px; margin-top: 20px; justify-content: flex-end; }
-        .btn-primary { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; transition: opacity 0.2s; }
-        .btn-primary:hover { opacity: 0.85; }
-        .btn-secondary { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; background: transparent; color: var(--muted); border: 1px solid var(--border); padding: 12px 20px; border-radius: 8px; cursor: pointer; transition: all 0.2s; }
-        .btn-secondary:hover { border-color: var(--muted); color: var(--text); }
-
-        /* MODAL */
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); z-index: 100; display: none; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
-        .modal-overlay.open { display: flex; }
-        .modal { background: var(--surface); border: 1px solid rgba(124,111,247,0.3); border-radius: 16px; padding: 36px; width: 90%; max-width: 560px; animation: fadeUp 0.25s ease; max-height: 90vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; }
-        .modal-title { font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
-        .btn-close { background: transparent; border: 1px solid var(--border); color: var(--muted); width: 30px; height: 30px; border-radius: 6px; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
-        .btn-close:hover { border-color: var(--danger); color: var(--danger); }
 
         /* EMPTY STATE */
         .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: var(--muted); }
         .empty-state .icon { font-size: 32px; margin-bottom: 12px; }
-
-        /* TOAST */
-        .toast { position: fixed; bottom: 32px; right: 32px; background: var(--surface2); border: 1px solid rgba(62,207,178,0.3); color: var(--accent2); font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 12px 20px; border-radius: 8px; z-index: 999; opacity: 0; transform: translateY(8px); transition: all 0.3s; pointer-events: none; }
-        .toast.show { opacity: 1; transform: translateY(0); }
-        .toast.error { border-color: rgba(247,108,108,0.3); color: var(--danger); }
 
         footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .footer-text { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.05em; }
@@ -158,7 +95,6 @@
 
         @media (max-width: 640px) {
             .profile-hero { grid-template-columns: 1fr; }
-            .form-grid, .gh-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -172,11 +108,7 @@
 
     <nav>
         <div class="logo" id="nav-logo">PORTFOLIO.DEV</div>
-        <div class="nav-right">
-            <span class="tag-status" id="status-tag">Visiteur</span>
-            <button class="btn-nav profile-btn" onclick="goToTab('profil')">Profil</button>
-            <button class="btn-nav" id="auth-btn" onclick="toggleAdmin()">Admin</button>
-        </div>
+        <button class="btn-nav-profil" onclick="goToTab('profil')">Profil</button>
     </nav>
 
     <div class="tabs">
@@ -185,68 +117,6 @@
     </div>
 
     <div class="page active" id="page-projets">
-
-        <div id="github-panel">
-            <div class="gh-header">
-                <span class="gh-title">⚡ Configuration Dépôt</span>
-                <span class="gh-status disconnected" id="gh-status-badge">Mode Connecté</span>
-            </div>
-            <div class="gh-grid">
-                <div class="form-group">
-                    <label>Token GitHub (Admin uniquement)</label>
-                    <input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxx">
-                </div>
-                <div class="form-group">
-                    <label>Utilisateur GitHub</label>
-                    <input type="text" id="gh-user" placeholder="ton-pseudo">
-                </div>
-                <div class="form-group">
-                    <label>Nom du dépôt</label>
-                    <input type="text" id="gh-repo" placeholder="portfolio">
-                </div>
-            </div>
-            <div style="display:flex;gap:10px;margin-top:14px;align-items:center;">
-                <button class="gh-save-btn" onclick="sauvegarderConfigGH()">Sauvegarder les accès →</button>
-                <span style="font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);">Requis uniquement pour pouvoir ajouter/modifier tes projets depuis cette page.</span>
-            </div>
-        </div>
-
-        <div id="admin-panel">
-            <div class="panel-title">Ajouter un projet</div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Titre du projet *</label>
-                    <input type="text" id="proj-title" placeholder="Ex: Application météo">
-                </div>
-                <div class="form-group">
-                    <label>Technologies *</label>
-                    <input type="text" id="proj-tech" placeholder="Ex: Python, HTML, CSS">
-                </div>
-                <div class="form-group full">
-                    <label>Description *</label>
-                    <textarea id="proj-desc" rows="3" placeholder="Ce que fait le projet..."></textarea>
-                </div>
-                <div class="form-group">
-                    <label>Catégorie</label>
-                    <select id="proj-cat">
-                        <option value="Web">Web</option>
-                        <option value="App">Application</option>
-                        <option value="Script">Script / Automatisation</option>
-                        <option value="Jeu">Jeu</option>
-                        <option value="Autre">Autre</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Lien GitHub (optionnel)</label>
-                    <input type="text" id="proj-link" placeholder="https://github.com/...">
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn-secondary" onclick="resetForm()">Effacer</button>
-                <button class="btn-primary" onclick="ajouterProjet()">Publier →</button>
-            </div>
-        </div>
-
         <div>
             <div class="section-header">
                 <span class="section-title">// Réalisations</span>
@@ -254,58 +124,10 @@
             </div>
             <div class="projects-grid" id="projects-container"></div>
         </div>
-
     </div>
 
     <div class="page" id="page-profil">
-
-        <div id="profile-edit-panel">
-            <div class="panel-title">Modifier le profil</div>
-            <div class="form-grid">
-                <div class="form-group">
-                    <label>Nom complet</label>
-                    <input type="text" id="edit-nom" placeholder="Jean Dupont">
-                </div>
-                <div class="form-group">
-                    <label>Titre / Rôle</label>
-                    <input type="text" id="edit-titre" placeholder="Développeur Web Junior">
-                </div>
-                <div class="form-group full">
-                    <label>Bio</label>
-                    <textarea id="edit-bio" rows="3" placeholder="Parle de toi..."></textarea>
-                </div>
-                <div class="form-group full">
-                    <label>Compétences (séparées par des virgules)</label>
-                    <input type="text" id="edit-skills" placeholder="HTML, CSS, JavaScript, Python...">
-                </div>
-                <div class="form-group">
-                    <label>GitHub URL</label>
-                    <input type="text" id="edit-github" placeholder="https://github.com/...">
-                </div>
-                <div class="form-group">
-                    <label>LinkedIn URL</label>
-                    <input type="text" id="edit-linkedin" placeholder="https://linkedin.com/in/...">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" id="edit-email" placeholder="toi@email.com">
-                </div>
-                <div class="form-group">
-                    <label>Site web (optionnel)</label>
-                    <input type="text" id="edit-site" placeholder="https://...">
-                </div>
-                <div class="form-group full">
-                    <label>Photo de profil (URL d'image)</label>
-                    <input type="text" id="edit-photo" placeholder="Colle l'URL d'une image...">
-                </div>
-            </div>
-            <div class="form-actions">
-                <button class="btn-primary" onclick="sauvegarderProfil()">Sauvegarder le profil →</button>
-            </div>
-        </div>
-
         <div id="profile-display"></div>
-
     </div>
 
     <footer>
@@ -315,137 +137,57 @@
 
 </div>
 
-<div class="modal-overlay" id="edit-modal">
-    <div class="modal">
-        <div class="modal-header">
-            <span class="modal-title">Modifier le projet</span>
-            <button class="btn-close" onclick="closeModal()">✕</button>
-        </div>
-        <div class="form-grid">
-            <div class="form-group">
-                <label>Titre</label>
-                <input type="text" id="m-title">
-            </div>
-            <div class="form-group">
-                <label>Technologies</label>
-                <input type="text" id="m-tech">
-            </div>
-            <div class="form-group full">
-                <label>Description</label>
-                <textarea id="m-desc" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label>Catégorie</label>
-                <select id="m-cat">
-                    <option value="Web">Web</option>
-                    <option value="App">Application</option>
-                    <option value="Script">Script / Automatisation</option>
-                    <option value="Jeu">Jeu</option>
-                    <option value="Autre">Autre</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Lien GitHub</label>
-                <input type="text" id="m-link">
-            </div>
-        </div>
-        <div class="form-actions">
-            <button class="btn-secondary" onclick="closeModal()">Annuler</button>
-            <button class="btn-primary" onclick="sauvegarderEdit()">Sauvegarder →</button>
-        </div>
-    </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
 <script>
-// ══════════ CONFIGURATION GITHUB INTÉGRÉE ══════════
-const CONFIG_DEFAUT = {
+// ══════════ CONFIGURATION GITHUB FIXE ══════════
+const CONFIG = {
     user: "rafi-lgtm",   
     repo: "myprofils"     
 };
 const DATA_FILE = 'data.json';
 
-// ══════════ STATE ══════════
 let projets = [];
 let profil = {};
-let adminMode = false;
-let editIndex = null;
-let ghConfig = {};
 
 // ══════════ INIT ══════════
 async function init() {
-    try {
-        // Récupère les configurations sauvegardées localement si existantes
-        ghConfig = JSON.parse(localStorage.getItem('ghConfig') || '{}');
-        if (!ghConfig.user) ghConfig.user = CONFIG_DEFAUT.user;
-        if (!ghConfig.repo) ghConfig.repo = CONFIG_DEFAUT.repo;
+    // Essaye de charger depuis la branche principale (main ou master)
+    let dataChargee = await chargerDepuisGitHubPublic();
 
-        // Évite le problème CORS en chargeant via le CDN raw de GitHub
-        let dataChargee = await chargerDepuisGitHubPublic();
-
-        // Fallback API authentifiée si configurée (Token présent)
-        if (!dataChargee && ghConfig.token) {
-            dataChargee = await chargerDepuisGitHubAPI();
+    if (!dataChargee) {
+        const container = document.getElementById('projects-container');
+        if (container) {
+            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger data.json. Vérifie que ton application Python a bien poussé le fichier sur GitHub.</p></div>`;
         }
-
-        // Fallback LocalStorage de secours si GitHub renvoie du vide
-        if (!dataChargee) {
-            projets = JSON.parse(localStorage.getItem('mesProjets') || '[]');
-            profil = JSON.parse(localStorage.getItem('monProfil') || '{}');
-        }
-    } catch (err) {
-        console.error("Erreur d'initialisation gérée :", err);
     }
 
-    // Lance le rendu quoi qu'il arrive pour éviter de bloquer sur un écran gris
-    verifierAdmin();
     afficherProjets();
     afficherProfil();
     
-    document.getElementById('footer-date').textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    const footerDate = document.getElementById('footer-date');
+    if (footerDate) {
+        footerDate.textContent = new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    }
 }
 
-// ══════════ LECTURE SECURISÉE SANS ERREUR DE BLOCAGE ══════════
+// ══════════ LECTURE DU JSON SANS CONFIGURATION REQUISE ══════════
 async function chargerDepuisGitHubPublic() {
     try {
-        const url = `https://raw.githubusercontent.com/${ghConfig.user}/${ghConfig.repo}/main/${DATA_FILE}`;
-        const res = await fetch(url, { cache: 'no-store' }); 
+        const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}`;
+        let res = await fetch(url, { cache: 'no-store' }); 
+        
         if (!res.ok) {
-            // Test avec l'ancienne branche 'master' si 'main' renvoie une erreur 404
-            const urlMaster = `https://raw.githubusercontent.com/${ghConfig.user}/${ghConfig.repo}/master/${DATA_FILE}`;
-            const resMaster = await fetch(urlMaster, { cache: 'no-store' });
-            if (!resMaster.ok) return false;
-            const data = await resMaster.json();
-            projets = data.projets || [];
-            profil = data.profil || {};
-            return true;
+            // Test de secours sur la branche master si la branche main n'existe pas
+            const urlMaster = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/master/${DATA_FILE}`;
+            res = await fetch(urlMaster, { cache: 'no-store' });
+            if (!res.ok) return false;
         }
+        
         const data = await res.json();
         projets = data.projets || [];
         profil = data.profil || {};
         return true;
     } catch (e) {
-        console.warn("Impossible de lire via l'adresse publique raw (Fichier vide, absent ou mal formaté).");
-        return false;
-    }
-}
-
-async function chargerDepuisGitHubAPI() {
-    try {
-        const url = `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${DATA_FILE}`;
-        const headers = { 'Accept': 'application/vnd.github.v3+json' };
-        if (ghConfig.token) headers['Authorization'] = `token ${ghConfig.token}`;
-        
-        const res = await fetch(url, { headers });
-        if (!res.ok) return false;
-        const data = await res.json();
-        const content = decodeURIComponent(escape(atob(data.content)));
-        const parsed = JSON.parse(content);
-        projets = parsed.projets || [];
-        profil = parsed.profil || {};
-        return true;
-    } catch(e) {
+        console.error("Erreur de lecture du JSON :", e);
         return false;
     }
 }
@@ -457,33 +199,17 @@ function afficherProjets() {
     if (!container) return;
     
     container.innerHTML = '';
-    countLabel.textContent = `${projets.length} projet${projets.length > 1 ? 's' : ''}`;
+    if (countLabel) countLabel.textContent = `${projets.length} projet${projets.length > 1 ? 's' : ''}`;
 
     if (!projets || projets.length === 0) {
-        container.innerHTML = `
-            <div class="empty-state">
-                <div class="icon">📂</div>
-                <p>Aucun projet trouvé dans ton fichier data.json.</p>
-                <small style="color:var(--muted); display:block; margin-top:10px;">
-                    Si c'est la première installation, ajoute ?admin=oui à ton URL pour commencer à en ajouter !
-                </small>
-            </div>`;
+        container.innerHTML = `<div class="empty-state"><div class="icon">📂</div><p>Aucun projet trouvé dans le fichier data.json.</p></div>`;
         return;
     }
 
-    projets.forEach((p, idx) => {
+    projets.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'project-card';
         
-        let actionButtons = '';
-        if (adminMode) {
-            actionButtons = `
-                <div class="card-actions">
-                    <button class="btn-icon edit" onclick="openModal(${idx})">✏️</button>
-                    <button class="btn-icon" onclick="supprimerProjet(${idx})">✕</button>
-                </div>`;
-        }
-
         let linkIcon = '';
         if (p.link) {
             linkIcon = `<a href="${p.link}" target="_blank" class="social-link" style="margin-top:12px; display:inline-flex; width:max-content">🔗 Lien projet</a>`;
@@ -492,7 +218,6 @@ function afficherProjets() {
         const tagsHTML = p.tech ? p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
 
         card.innerHTML = `
-            ${actionButtons}
             <div class="card-cat">${p.cat || 'Web'}</div>
             <div class="card-title">${p.titre || 'Sans titre'}</div>
             <div class="card-desc">${p.desc || 'Pas de description.'}</div>
@@ -509,7 +234,7 @@ function afficherProfil() {
     
     const nom = profil.nom || "Mon Portfolio";
     const titre = profil.titre || "Développeur";
-    const bio = profil.bio || "Bienvenue sur mon espace. Modifie ce texte depuis l'interface admin.";
+    const bio = profil.bio || "Bienvenue sur mon espace.";
     const email = profil.email || "";
     const github = profil.github || "";
     const linkedin = profil.linkedin || "";
@@ -554,7 +279,6 @@ function afficherProfil() {
     `;
 }
 
-// ══════════ CONTROLES NAV ══════════
 function goToTab(tab) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -564,220 +288,7 @@ function goToTab(tab) {
     if (targetTab) targetTab.classList.add('active');
 }
 
-function verifierAdmin() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') === 'oui') {
-        adminMode = true;
-        
-        const authBtn = document.getElementById('auth-btn');
-        const statusTag = document.getElementById('status-tag');
-        
-        if (authBtn) { authBtn.classList.add('active'); authBtn.textContent = '✓ Admin'; }
-        if (statusTag) { statusTag.textContent = 'Mode Admin'; statusTag.style.color = 'var(--accent)'; }
-        
-        const adminPanel = document.getElementById('admin-panel');
-        const githubPanel = document.getElementById('github-panel');
-        const profilePanel = document.getElementById('profile-edit-panel');
-        
-        if (adminPanel) adminPanel.classList.add('open');
-        if (githubPanel) githubPanel.classList.add('open');
-        if (profilePanel) profilePanel.classList.add('open');
-        
-        if (ghConfig.token) document.getElementById('gh-token').value = ghConfig.token;
-        document.getElementById('gh-user').value = ghConfig.user;
-        document.getElementById('gh-repo').value = ghConfig.repo;
-        updateGHStatus(!!ghConfig.token);
-        
-        chargerFormulaireProfil();
-    }
-}
-
-function toggleAdmin() {
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') !== 'oui') { 
-        showToast('Ajoute ?admin=oui à la fin de ton URL pour modifier le site.', 'error'); 
-        return; 
-    }
-    adminMode = !adminMode;
-    document.getElementById('admin-panel').classList.toggle('open', adminMode);
-    document.getElementById('github-panel').classList.toggle('open', adminMode);
-    document.getElementById('profile-edit-panel').classList.toggle('open', adminMode);
-    document.getElementById('auth-btn').classList.toggle('active', adminMode);
-    document.getElementById('auth-btn').textContent = adminMode ? '✓ Admin' : 'Admin';
-    document.getElementById('status-tag').textContent = adminMode ? 'Mode Admin' : 'Visiteur';
-    afficherProjets();
-    afficherProfil();
-}
-
-function sauvegarderConfigGH() {
-    const token = document.getElementById('gh-token').value.trim();
-    const user  = document.getElementById('gh-user').value.trim();
-    const repo  = document.getElementById('gh-repo').value.trim();
-    if (!user || !repo) { showToast('L\'utilisateur et le dépôt sont requis.', 'error'); return; }
-    
-    ghConfig = { token, user, repo };
-    localStorage.setItem('ghConfig', JSON.stringify(ghConfig));
-    updateGHStatus(!!token);
-    showToast('Configuration enregistrée !');
-    init();
-}
-
-function updateGHStatus(connected) {
-    const badge = document.getElementById('gh-status-badge');
-    if (!badge) return;
-    badge.textContent = connected ? '● Connecté (Écriture)' : '● Lecture Seule';
-    badge.className = 'gh-status ' + (connected ? 'connected' : 'disconnected');
-}
-
-async function getFileSHA(filename) {
-    if (!ghConfig.token) return null;
-    const url = `https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${filename}`;
-    try {
-        const res = await fetch(url, { headers: { 'Authorization': `token ${ghConfig.token}`, 'Accept': 'application/vnd.github.v3+json' } });
-        if (!res.ok) return null;
-        const data = await res.json();
-        return data.sha;
-    } catch { return null; }
-}
-
-async function sauvegarderSurGitHub() {
-    localStorage.setItem('mesProjets', JSON.stringify(projets));
-    localStorage.setItem('monProfil', JSON.stringify(profil));
-
-    if (!ghConfig.token) {
-        showToast('Sauvegardé localement. Met un token GitHub pour envoyer en ligne.', 'warn');
-        return false;
-    }
-
-    const payload = { projets, profil };
-    const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-
-    try {
-        const sha = await getFileSHA(DATA_FILE);
-        const body = { message: `Mise à jour portfolio via interface`, content };
-        if (sha) body.sha = sha;
-
-        const res = await fetch(`https://api.github.com/repos/${ghConfig.user}/${ghConfig.repo}/contents/${DATA_FILE}`, {
-            method: 'PUT',
-            headers: { 'Authorization': `token ${ghConfig.token}`, 'Content-Type': 'application/json', 'Accept': 'application/vnd.github.v3+json' },
-            body: JSON.stringify(body)
-        });
-
-        if(res.ok) {
-            showToast('data.json mis à jour avec succès sur GitHub !');
-            return true;
-        } else {
-            showToast('Erreur d\'écriture sur GitHub. Vérifie ton Token.', 'error');
-            return false;
-        }
-    } catch(e) {
-        showToast('Erreur réseau lors de la sauvegarde.', 'error');
-        return false;
-    }
-}
-
-// ══════════ GESTION PROJETS / FORMULAIRES ══════════
-function ajouterProjet() {
-    const titre = document.getElementById('proj-title').value.trim();
-    const tech = document.getElementById('proj-tech').value.trim();
-    const desc = document.getElementById('proj-desc').value.trim();
-    const cat = document.getElementById('proj-cat').value;
-    const link = document.getElementById('proj-link').value.trim();
-
-    if(!titre || !tech || !desc) { showToast('Remplis les champs obligatoires (*)', 'error'); return; }
-
-    projets.push({ titre, tech, desc, cat, link });
-    resetForm();
-    afficherProjets();
-    sauvegarderSurGitHub();
-}
-
-function supprimerProjet(idx) {
-    if(confirm('Supprimer ce projet ?')) {
-        projets.splice(idx, 1);
-        afficherProjets();
-        sauvegarderSurGitHub();
-    }
-}
-
-function openModal(idx) {
-    editIndex = idx;
-    const p = projets[idx];
-    document.getElementById('m-title').value = p.titre || '';
-    document.getElementById('m-tech').value = p.tech || '';
-    document.getElementById('m-desc').value = p.desc || '';
-    document.getElementById('m-cat').value = p.cat || 'Web';
-    document.getElementById('m-link').value = p.link || '';
-    document.getElementById('edit-modal').classList.add('open');
-}
-
-function closeModal() {
-    document.getElementById('edit-modal').classList.remove('open');
-    editIndex = null;
-}
-
-function sauvegarderEdit() {
-    if(editIndex !== null) {
-        projets[editIndex] = {
-            titre: document.getElementById('m-title').value.trim(),
-            tech: document.getElementById('m-tech').value.trim(),
-            desc: document.getElementById('m-desc').value.trim(),
-            cat: document.getElementById('m-cat').value,
-            link: document.getElementById('m-link').value.trim()
-        };
-        closeModal();
-        afficherProjets();
-        sauvegarderSurGitHub();
-    }
-}
-
-function resetForm() {
-    document.getElementById('proj-title').value = '';
-    document.getElementById('proj-tech').value = '';
-    document.getElementById('proj-desc').value = '';
-    document.getElementById('proj-link').value = '';
-}
-
-function chargerFormulaireProfil() {
-    if(!document.getElementById('edit-nom')) return;
-    document.getElementById('edit-nom').value = profil.nom || '';
-    document.getElementById('edit-titre').value = profil.titre || '';
-    document.getElementById('edit-bio').value = profil.bio || '';
-    document.getElementById('edit-skills').value = profil.skills ? profil.skills.join(', ') : '';
-    document.getElementById('edit-github').value = profil.github || '';
-    document.getElementById('edit-linkedin').value = profil.linkedin || '';
-    document.getElementById('edit-email').value = profil.email || '';
-    document.getElementById('edit-site').value = profil.site || '';
-    document.getElementById('edit-photo').value = profil.photo || '';
-}
-
-function sauvegarderProfil() {
-    profil = {
-        nom: document.getElementById('edit-nom').value.trim(),
-        titre: document.getElementById('edit-titre').value.trim(),
-        bio: document.getElementById('edit-bio').value.trim(),
-        skills: document.getElementById('edit-skills').value.split(',').map(s => s.trim()).filter(s => s.length > 0),
-        github: document.getElementById('edit-github').value.trim(),
-        linkedin: document.getElementById('edit-linkedin').value.trim(),
-        email: document.getElementById('edit-email').value.trim(),
-        site: document.getElementById('edit-site').value.trim(),
-        photo: document.getElementById('edit-photo').value.trim()
-    };
-    afficherProfil();
-    sauvegarderSurGitHub();
-}
-
-function showToast(msg, type = 'success') {
-    const t = document.getElementById('toast');
-    if (!t) return;
-    t.textContent = msg;
-    t.className = 'toast show ' + (type === 'error' ? 'error' : (type === 'warn' ? 'warn' : ''));
-    setTimeout(() => t.classList.remove('show'), 4000);
-}
-
 window.onload = init;
 </script>
 </body>
 </html>
-
-```
