@@ -146,7 +146,7 @@ async function init() {
     if (!dataChargee) {
         const container = document.getElementById('projects-container');
         if (container) {
-            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de lire le fichier sur GitHub. Vérifie que le dépôt et le fichier data.json sont bien publics.</p></div>`;
+            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Erreur de chargement. Vérifie que le fichier data.json existe bien sur GitHub.</p></div>`;
         }
     }
 
@@ -159,18 +159,18 @@ async function init() {
     }
 }
 
-// ══════════ LECTURE BRUTE SUR LE STOCKAGE SANS PASSER PAR LE CACHE PAGES ══════════
+// ══════════ LECTURE EN DIRECT SUR LE SERVEUR RAW GITHUB ══════════
 async function chargerDonnees() {
     try {
         const antiCache = new Date().getTime();
         
-        // On cible directement le serveur de fichiers brut de GitHub (mis à jour à la seconde près)
+        // Cible l'adresse brute du fichier pour éviter tout temps d'attente
         const url = `https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json?t=${antiCache}`;
         
         let res = await fetch(url, { cache: "no-store" }); 
         
         if (!res.ok) {
-            // Secours au cas où la branche principale s'appelle master au lieu de main
+            // Secours si le dépôt utilise la branche master
             const urlMaster = `https://raw.githubusercontent.com/rafi-lgtm/myprofils/master/data.json?t=${antiCache}`;
             res = await fetch(urlMaster, { cache: "no-store" });
             if (!res.ok) return false;
@@ -186,7 +186,7 @@ async function chargerDonnees() {
     }
 }
 
-// ══════════ RENDU INTERFACE ══════════
+// ══════════ RENDU DES PROJETS ══════════
 function afficherProjets() {
     const container = document.getElementById('projects-container');
     const countLabel = document.getElementById('count-label');
@@ -204,9 +204,11 @@ function afficherProjets() {
         const card = document.createElement('div');
         card.className = 'project-card';
         
+        // Sécurité : n'affiche le bouton lien que si le texte ressemble à un vrai lien internet
         let linkIcon = '';
-        if (p.link && p.link.startsWith('http')) {
-            linkIcon = `<a href="${p.link}" target="_blank" class="social-link" style="margin-top:12px; display:inline-flex; width:max-content">🔗 Lien projet</a>`;
+        if (p.link && (p.link.startsWith('http') || p.link.includes('.'))) {
+            let realLink = p.link.startsWith('http') ? p.link : `https://${p.link}`;
+            linkIcon = `<a href="${realLink}" target="_blank" class="social-link" style="margin-top:12px; display:inline-flex; width:max-content">🔗 Lien projet</a>`;
         }
 
         const tagsHTML = p.tech ? p.tech.split(',').map(t => `<span class="tech-tag">${t.trim()}</span>`).join('') : '';
@@ -222,6 +224,7 @@ function afficherProjets() {
     });
 }
 
+// ══════════ RENDU DU PROFIL ══════════
 function afficherProfil() {
     const display = document.getElementById('profile-display');
     if (!display) return;
@@ -229,22 +232,17 @@ function afficherProfil() {
     const nom = profil.nom || "Mon Portfolio";
     const titre = profil.titre || "Développeur";
     const bio = profil.bio || "Bienvenue sur mon espace.";
-    const email = profil.email || "";
-    const github = profil.github || "";
-    const linkedin = profil.linkedin || "";
-    const site = profil.site || "";
-    const photo = profil.photo || "";
-
+    
     const logoElement = document.getElementById('nav-logo');
     if (logoElement) logoElement.textContent = nom.toUpperCase().split(' ')[0] + '.DEV';
 
     let photoHTML = `<div class="avatar">👨‍💻</div>`;
-    if (photo && photo.startsWith('http')) {
-        photoHTML = `<div class="avatar"><img src="${photo}" alt="Avatar"></div>`;
+    if (profil.photo && profil.photo.startsWith('http')) {
+        photoHTML = `<div class="avatar"><img src="${profil.photo}" alt="Avatar"></div>`;
     }
 
     let skillsHTML = '';
-    if (profil.skills && profil.skills.length) {
+    if (profil.skills && profil.skills.length > 0) {
         const tags = profil.skills.map(s => `<span class="skill-tag">${s.trim()}</span>`).join('');
         skillsHTML = `
             <div class="section-block" style="margin-top: 40px;">
@@ -254,10 +252,18 @@ function afficherProfil() {
     }
 
     let linksHTML = '';
-    if (email) linksHTML += `<a href="mailto:${email}" class="social-link">📧 Email</a>`;
-    if (github && github.startsWith('http')) linksHTML += `<a href="${github}" target="_blank" class="social-link">🐙 GitHub</a>`;
-    if (linkedin && linkedin.startsWith('http')) linksHTML += `<a href="${linkedin}" target="_blank" class="social-link">💼 LinkedIn</a>`;
-    if (site && site.startsWith('http')) linksHTML += `<a href="${site}" target="_blank" class="social-link">🌐 Site</a>`;
+    if (profil.email) linksHTML += `<a href="mailto:${profil.email}" class="social-link">📧 Email</a>`;
+    if (profil.github) {
+        let ghLink = profil.github.startsWith('http') ? profil.github : `https://github.com/${profil.github}`;
+        linksHTML += `<a href="${ghLink}" target="_blank" class="social-link">🐙 GitHub</a>`;
+    }
+    if (profil.linkedin) {
+        let liLink = profil.linkedin.startsWith('http') ? profil.linkedin : `https://linkedin.com/in/${profil.linkedin}`;
+        linksHTML += `<a href="${liLink}" target="_blank" class="social-link">💼 LinkedIn</a>`;
+    }
+    if (profil.site && profil.site.startsWith('http')) {
+        linksHTML += `<a href="${profil.site}" target="_blank" class="social-link">🌐 Site</a>`;
+    }
 
     display.innerHTML = `
         <div class="profile-hero">
