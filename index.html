@@ -94,7 +94,7 @@
         .skills-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
         .skill-tag { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); background: var(--surface2); border: 1px solid var(--border); padding: 5px 14px; border-radius: 6px; }
 
-        /* CARDS (Aperçu sur la grille principale) */
+        /* CARDS (Grille principale) */
         .section-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
         .section-title { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 20px; }
@@ -110,7 +110,7 @@
         .card-cat { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; }
         .card-title { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: var(--text); }
         
-        /* On coupe la description sur la grille pour que ça reste propre */
+        /* Description limitée sur l'aperçu */
         .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; margin-bottom: 16px; flex-grow: 1; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
         .tech-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
         .tech-tag { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: var(--surface2); padding: 3px 10px; border-radius: 4px; border: 1px solid var(--border); }
@@ -128,7 +128,7 @@
         .modal-cat { font-family: 'Space Mono', monospace; font-size: 11px; color: var(--accent); text-transform: uppercase; margin-bottom: 8px; }
         .modal-title { font-size: 26px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
         
-        /* Description complète sans aucune coupure */
+        /* Description complète et lisible */
         .modal-desc { font-size: 15px; color: var(--text); opacity: 0.85; line-height: 1.7; margin-bottom: 24px; white-space: pre-wrap; }
         
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
@@ -149,7 +149,7 @@
 
 <div class="modal-overlay" id="project-modal" onclick="fermerModal(event)">
     <div class="modal-container">
-        <button class="modal-close" onclick="fermerModal(direct=true)">✕</button>
+        <button class="modal-close" onclick="fermerModal(event, true)">✕</button>
         <div class="modal-img-wrap" id="modal-img"></div>
         <div class="modal-body">
             <div class="modal-cat" id="modal-cat"></div>
@@ -211,6 +211,7 @@
 </div>
 
 <script>
+let原projetsOrigine = []; 
 let projetsOrigine = []; 
 let profil = {};
 
@@ -298,11 +299,10 @@ function afficherProjets(listeAAfficher) {
         return;
     }
 
-    listeAAfficher.forEach((p, index) => {
+    listeAAfficher.forEach((p) => {
         const card = document.createElement('div');
         card.className = 'project-card';
         
-        // Au clic, on appelle la fonction pour ouvrir la grande fenêtre
         card.onclick = () => ouvrirModal(p);
 
         let imgHTML = `<div class="project-img-placeholder">💻</div>`;
@@ -325,11 +325,10 @@ function afficherProjets(listeAAfficher) {
     });
 }
 
-/* ══════════ FONCTIONS DE LA MODALE ══════════ */
+/* ══════════ FONCTIONS DE LA MODALE CORRIGÉES ══════════ */
 function ouvrirModal(projet) {
     const modal = document.getElementById('project-modal');
     
-    // Remplissage de l'image
     const imgWrap = document.getElementById('modal-img');
     if (projet.photo && projet.photo.length > 10) {
         imgWrap.innerHTML = `<img src="${projet.photo}" alt="${projet.titre}">`;
@@ -337,16 +336,13 @@ function ouvrirModal(projet) {
         imgWrap.innerHTML = `<div class="project-img-placeholder" style="font-size:64px">💻</div>`;
     }
 
-    // Remplissage des textes
     document.getElementById('modal-cat').textContent = projet.cat || 'Web';
     document.getElementById('modal-title').textContent = projet.titre || 'Sans titre';
     document.getElementById('modal-desc').textContent = projet.desc || 'Aucune description disponible.';
     
-    // Remplissage des technos
     const techWrap = document.getElementById('modal-tech');
     techWrap.innerHTML = projet.tech ? projet.tech.split(',').map(t => `<span class="tech-tag" style="font-size:12px; padding:4px 12px">${t.trim()}</span>`).join('') : '';
 
-    // Gestion du lien (optionnel, affiché proprement en bas si présent)
     const linkWrap = document.getElementById('modal-link-wrap');
     let unLien = projet.link && (projet.link.startsWith('http') || projet.link.includes('.'));
     if (unLien) {
@@ -356,17 +352,16 @@ function ouvrirModal(projet) {
         linkWrap.innerHTML = '';
     }
 
-    // Affichage de la fenêtre
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Empêche de scroller le fond de la page
+    document.body.style.overflow = 'hidden'; 
 }
 
 function fermerModal(event, direct = false) {
     const modal = document.getElementById('project-modal');
-    // On ferme si on clique sur la croix OU directement sur le fond noir de la modale
+    // Ferme si on clique sur la croix (direct = true) OU si on clique sur le fond noir en dehors de la boîte
     if (direct || event.target === modal) {
         modal.style.display = 'none';
-        document.body.style.overflow = ''; // Réactive le scroll global
+        document.body.style.overflow = ''; 
     }
 }
 
