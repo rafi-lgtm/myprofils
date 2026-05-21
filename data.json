@@ -22,5 +22,15 @@
       "link": "qdqdqdqq"
     }
   ],
-  "profil": {}
+  "profil": {
+    "nom": "rafael",
+    "titre": "le denn",
+    "bio": "",
+    "email": "",
+    "github": "",
+    "linkedin": "",
+    "site": "",
+    "photo": "",
+    "skills": []
+  }
 }
