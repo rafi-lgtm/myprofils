@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio en temps réel</title>
+    <title>Portfolio</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -37,9 +37,8 @@
         /* NAV */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 28px 0; border-bottom: 1px solid var(--border); margin-bottom: 60px; }
         .logo { font-family: 'Space Mono', monospace; font-size: 14px; color: var(--accent); letter-spacing: 0.1em; text-transform: uppercase; }
-        .live-indicator { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); background: rgba(62,207,178,0.08); border: 1px solid rgba(62,207,178,0.2); padding: 4px 10px; border-radius: 6px; display: flex; align-items: center; gap: 6px; }
-        .live-dot { width: 6px; height: 6px; background: var(--accent2); border-radius: 50%; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
+        .btn-nav-profil { font-family: 'Space Mono', monospace; font-size: 11px; background: transparent; color: var(--accent2); border: 1px solid rgba(62,207,178,0.3); padding: 6px 14px; border-radius: 6px; cursor: pointer; letter-spacing: 0.05em; transition: all 0.2s; }
+        .btn-nav-profil:hover { background: rgba(62,207,178,0.1); border-color: var(--accent2); }
 
         /* TABS */
         .tabs { display: flex; gap: 4px; margin-bottom: 48px; border-bottom: 1px solid var(--border); }
@@ -49,7 +48,8 @@
 
         /* PAGE VIEWS */
         .page { display: none; }
-        .page.active { display: block; }
+        .page.active { display: block; animation: fadeUp 0.3s ease; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
         /* PROFILE PAGE */
         .profile-hero { display: grid; grid-template-columns: auto 1fr; gap: 36px; align-items: start; margin-bottom: 56px; }
@@ -106,7 +106,7 @@
 
     <nav>
         <div class="logo" id="nav-logo">PORTFOLIO.DEV</div>
-        <div class="live-indicator"><div class="live-dot"></div>LIVE MONITOR</div>
+        <button class="btn-nav-profil" onclick="goToTab('profil')">Profil</button>
     </nav>
 
     <div class="tabs">
@@ -136,25 +136,29 @@
 </div>
 
 <script>
-// ══════════ CONFIGURATION GITHUB FIXE ══════════
+// ══════════ CONFIGURATION GITHUB ══════════
 const CONFIG = {
     user: "rafi-lgtm",   
     repo: "myprofils"     
 };
 const DATA_FILE = 'data.json';
-const DELAI_VERIFICATION = 5000; // Vérification toutes les 5 secondes (5000ms)
 
 let projets = [];
 let profil = {};
-let dernierJsonString = ""; // Garde en mémoire l'ancienne version pour éviter de tout faire clignoter
 
-// ══════════ INIT & BOUCLE LIVE ══════════
+// ══════════ INIT ══════════
 async function init() {
-    // Premier chargement immédiat au démarrage
-    await verifierMise AJour();
-    
-    // Lance la surveillance en arrière-plan toutes les 5 secondes
-    setInterval(verifierMise AJour, DELAI_VERIFICATION);
+    let dataChargee = await chargerDepuisGitHubPublic();
+
+    if (!dataChargee) {
+        const container = document.getElementById('projects-container');
+        if (container) {
+            container.innerHTML = `<div class="empty-state"><div class="icon">⚠️</div><p>Impossible de charger data.json. Vérifie le nom de ton dépôt ou de ton fichier.</p></div>`;
+        }
+    }
+
+    afficherProjets();
+    afficherProfil();
     
     const footerDate = document.getElementById('footer-date');
     if (footerDate) {
@@ -162,40 +166,31 @@ async function init() {
     }
 }
 
-// ══════════ SURVEILLANCE AUTOMATIQUE ══════════
-async function verifierMise AJour() {
+// ══════════ LECTURE DU JSON AVEC ANTI-CACHE FLAMBANT NEUF ══════════
+async function chargerDepuisGitHubPublic() {
     try {
-        const versionUnique = new Date().getTime();
+        // Génère un identifiant unique basé sur la milliseconde actuelle (ex: ?t=1716... )
+        const antiCache = new Date().getTime();
         
-        // IMPORTANT : Utilise l'URL GitHub Pages si ton dépôt est privé
-        const url = `https://rafi-lgtm.github.io/myprofils/${DATA_FILE}?t=${versionUnique}`;
+        // On utilise l'URL CDN brute de GitHub
+        const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}?t=${antiCache}`;
         
-        // (Alternative si ton dépôt redevient public un jour) :
-        // const url = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/main/${DATA_FILE}?t=${versionUnique}`;
+        let res = await fetch(url, { cache: "no-store" }); 
         
-        const res = await fetch(url); 
-        if (!res.ok) return;
-        
-        const texteBrut = await res.text();
-        
-        // Si le texte du fichier n'a pas bougé, on ne fait rien
-        if (texteBrut === dernierJsonString) {
-            return; 
+        if (!res.ok) {
+            // Essai de secours sur la branche master
+            const urlMaster = `https://raw.githubusercontent.com/${CONFIG.user}/${CONFIG.repo}/master/${DATA_FILE}?t=${antiCache}`;
+            res = await fetch(urlMaster, { cache: "no-store" });
+            if (!res.ok) return false;
         }
         
-        // Si c'est différent, il y a du nouveau ! On enregistre et on met à jour le site
-        dernierJsonString = texteBrut;
-        const data = JSON.parse(texteBrut);
-        
+        const data = await res.json();
         projets = data.projets || [];
         profil = data.profil || {};
-        
-        console.log("🔄 Données mises à jour automatiquement !");
-        afficherProjets();
-        afficherProfil();
-        
+        return true;
     } catch (e) {
-        console.error("Erreur lors de la vérification auto :", e);
+        console.error("Erreur de lecture du JSON :", e);
+        return false;
     }
 }
 
