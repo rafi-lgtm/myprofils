@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Portfolio Pro</title>
     <style>
-        /* ══════════ DESIGN & THEME SOMBRE ══════════ */
+        /* ══════════ DESIGN NOIR & BLANC ══════════ */
         :root {
-            --bg-main: #0d0e15;
-            --bg-card: #161925;
-            --bg-input: #222538;
-            --accent: #584cf4;
-            --accent-green: #10b981;
+            --bg-main: #000000;
+            --bg-card: #121212;
+            --bg-input: #222222;
+            --border-color: #333333;
+            --accent-white: #ffffff;
             --text-main: #ffffff;
-            --text-muted: #a0a5c0;
+            --text-muted: #aaaaaa;
         }
 
         * {
@@ -43,7 +43,7 @@
             display: flex;
             align-items: center;
             gap: 25px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border: 1px solid var(--border-color);
         }
 
         .profile-img {
@@ -51,19 +51,22 @@
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--accent);
+            border: 2px solid var(--accent-white);
             background: var(--bg-main);
         }
 
         .profile-info h1 {
             font-size: 24px;
             margin-bottom: 5px;
+            font-weight: 700;
         }
 
         .profile-info h2 {
-            font-size: 16px;
-            color: var(--accent-green);
-            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-main);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-bottom: 10px;
         }
 
@@ -74,56 +77,99 @@
         }
 
         .social-links {
-            margin-top: 10px;
+            margin-top: 12px;
             display: flex;
             gap: 15px;
         }
 
         .social-links a {
-            color: var(--accent);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: bold;
+            color: var(--text-main);
+            text-decoration: underline;
+            font-size: 13px;
         }
 
-        /* ══════════ SYSTÈME DE TRI (FILTRES) ══════════ */
+        .social-links a:hover {
+            color: var(--text-muted);
+        }
+
+        /* ══════════ BARRE DE CONTROLE & TRI ══════════ */
+        .controls-wrapper {
+            background: var(--bg-card);
+            padding: 15px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            border: 1px solid var(--border-color);
+        }
+
         .filter-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 30px;
+            gap: 8px;
         }
 
         .filter-btn {
-            background: var(--bg-card);
+            background: var(--bg-input);
             color: var(--text-muted);
             padding: 8px 16px;
-            border-radius: 20px;
-            border: 1px solid var(--bg-input);
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
             cursor: pointer;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             transition: all 0.2s;
         }
 
         .filter-btn:hover {
-            color: var(--text-main);
-            border-color: var(--accent);
+            color: var(--accent-white);
+            border-color: var(--accent-white);
         }
 
         .filter-btn.active {
-            background: var(--accent);
+            background: var(--accent-white);
+            color: var(--bg-main);
+            border-color: var(--accent-white);
+        }
+
+        .sort-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sort-label {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .sort-select {
+            background: var(--bg-input);
             color: var(--text-main);
-            border-color: var(--accent);
+            border: 1px solid var(--border-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .sort-select:focus {
+            border-color: var(--accent-white);
         }
 
         /* ══════════ GRILLE DE PROJETS ══════════ */
         h2.section-title {
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
+            letter-spacing: 2px;
+            color: var(--text-main);
+            border-left: 3px solid var(--accent-white);
+            padding-left: 10px;
         }
 
         .projects-grid {
@@ -138,17 +184,13 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s, opacity 0.3s;
-        }
-
-        /* Quand un projet est masqué par le tri */
-        .project-card.hidden {
-            display: none;
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s, border-color 0.2s;
         }
 
         .project-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-3px);
+            border-color: var(--accent-white);
         }
 
         .project-img {
@@ -156,6 +198,12 @@
             height: 180px;
             object-fit: cover;
             background: var(--bg-main);
+            filter: grayscale(100%); /* Force les images des projets en NB au survol si désiré */
+            transition: filter 0.3s;
+        }
+        
+        .project-card:hover .project-img {
+            filter: grayscale(0%); /* Revient en couleur au survol */
         }
 
         .project-img-placeholder {
@@ -166,7 +214,8 @@
             align-items: center;
             justify-content: center;
             color: var(--text-muted);
-            font-size: 40px;
+            font-size: 30px;
+            border-bottom: 1px solid var(--border-color);
         }
 
         .project-content {
@@ -179,13 +228,14 @@
         .project-meta {
             display: flex;
             justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 10px;
+            font-size: 11px;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
         }
 
         .project-cat {
-            color: var(--accent-green);
-            font-weight: bold;
+            color: var(--text-main);
+            font-weight: 700;
             text-transform: uppercase;
         }
 
@@ -196,13 +246,14 @@
         .project-title {
             font-size: 18px;
             margin-bottom: 10px;
+            font-weight: 600;
         }
 
         .project-desc {
             color: var(--text-muted);
             font-size: 14px;
-            line-height: 1.5;
-            margin-bottom: 15px;
+            line-height: 1.6;
+            margin-bottom: 20px;
             flex-grow: 1;
         }
 
@@ -211,28 +262,28 @@
             color: var(--text-muted);
             background: var(--bg-main);
             padding: 6px 10px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            border: 1px solid #222538;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
         }
 
-        /* ══════════ BOUTONS CLIQUABLES ══════════ */
+        /* ══════════ ACTIONS DE CLIC SÉCURISÉES ══════════ */
         .project-actions {
             display: flex;
             flex-direction: column;
             gap: 8px;
             margin-top: auto; 
-            position: relative;
-            z-index: 10;       
+            position: relative;   
+            z-index: 999;         
+            pointer-events: auto; 
         }
 
         .btn {
             width: 100%;
-            padding: 12px;
+            padding: 11px;
             border-radius: 6px;
-            border: none;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 600;
             cursor: pointer;
             text-align: center;
             text-decoration: none;
@@ -240,49 +291,62 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: background 0.2s, opacity 0.2s;
-        }
-
-        .btn:hover {
-            opacity: 0.9;
+            transition: all 0.2s;
         }
 
         .btn-link {
-            background: var(--accent);
-            color: var(--text-main);
+            background: var(--accent-white);
+            color: var(--bg-main);
+            border: 1px solid var(--accent-white);
+        }
+
+        .btn-link:hover {
+            background: transparent;
+            color: var(--accent-white);
         }
 
         .btn-download {
-            background: #1e293b;
-            color: #38bdf8;
-            border: 1px solid #38bdf8;
+            background: transparent;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
         }
 
         .btn-download:hover {
-            background: #38bdf8;
-            color: #0f172a;
+            border-color: var(--accent-white);
+            background: var(--bg-input);
         }
 
         .loading {
             text-align: center;
             color: var(--text-muted);
             padding: 50px;
-            font-size: 16px;
+            font-size: 15px;
+            letter-spacing: 1px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- 👩‍💻 BLOC PROFIL -->
+        <!-- 👩‍💻 PROFILE -->
         <header id="profile-container">
             <div class="loading">Chargement du profil...</div>
         </header>
 
-        <!-- 📑 ZONE DE TRI / FILTRES -->
-        <div class="filter-container" id="filters-container"></div>
+        <!-- 📑 MENU DES COMPOSANTS DE FILTRE ET DE TRI -->
+        <div class="controls-wrapper">
+            <div class="filter-container" id="filters-container"></div>
+            
+            <div class="sort-container">
+                <span class="sort-label">Trier par :</span>
+                <select class="sort-select" id="sort-date-select">
+                    <option value="recent">📅 Plus récents</option>
+                    <option value="ancien">⏳ Plus anciens</option>
+                </select>
+            </div>
+        </div>
 
-        <!-- 📁 BLOC PROJETS -->
+        <!-- 📁 GRILLE DE PROJETS -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
             <div class="projects-grid" id="projects-container">
@@ -292,10 +356,11 @@
     </div>
 
     <script>
-        // URL brute de ton fichier data.json sur GitHub
-        const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json";
+        const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/main/data.json";
+        
+        let listeProjetsGlobale = [];
+        let categorieActive = "all";
 
-        // Moteur de téléchargement pour les fichiers (Word, PPT, F3D, etc.)
         function declencherTelechargement(base64Data, nomFichier) {
             try {
                 const byteCharacters = atob(base64Data);
@@ -320,47 +385,127 @@
             }
         }
 
-        // Fonction principale de chargement
+        function extraireDate(projet) {
+            if (!projet.date) return new Date(0);
+            const parties = projet.date.split('/');
+            if (parties.length === 3) {
+                return new Date(parties[2], parties[1] - 1, parties[0]);
+            }
+            return new Date(projet.date);
+        }
+
+        function appliquerAffichageFiltresEtTri() {
+            const projetsContainer = document.getElementById('projects-container');
+            const triOrdre = document.getElementById('sort-date-select').value;
+
+            let projetsTraites = [...listeProjetsGlobale];
+            projetsTraites.sort((a, b) => {
+                const dateA = extraireDate(a);
+                const dateB = extraireDate(b);
+                return triOrdre === 'recent' ? dateB - dateA : dateA - dateB;
+            });
+
+            projetsContainer.innerHTML = '';
+
+            projetsTraites.forEach((projet) => {
+                const catProjet = projet.cat ? projet.cat.trim() : 'Général';
+                
+                if (categorieActive !== 'all' && catProjet.toLowerCase() !== categorieActive.toLowerCase()) {
+                    return;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'project-card';
+
+                let imageHTML = `<div class="project-img-placeholder">📁</div>`;
+                if (projet.photo && projet.photo.startsWith('data:image')) {
+                    imageHTML = `<img class="project-img" src="${projet.photo}" alt="${projet.titre}">`;
+                }
+
+                const dateAffichage = projet.date ? projet.date : new Date().toLocaleDateString('fr-FR');
+
+                card.innerHTML = `
+                    ${imageHTML}
+                    <div class="project-content">
+                        <div class="project-meta">
+                            <span class="project-cat">${catProjet}</span>
+                            <span class="project-date">${dateAffichage}</span>
+                        </div>
+                        <h3 class="project-title">${projet.titre}</h3>
+                        <p class="project-desc">${projet.desc || 'Aucune description.'}</p>
+                        ${projet.tech ? `<div class="project-tech">🛠️ ${projet.tech}</div>` : ''}
+                        <div class="project-actions"></div>
+                    </div>
+                `;
+
+                const actionsDiv = card.querySelector('.project-actions');
+
+                if (projet.link && projet.link.trim() !== "") {
+                    const linkBtn = document.createElement('a');
+                    linkBtn.className = 'btn btn-link';
+                    linkBtn.href = projet.link;
+                    linkBtn.target = '_blank';
+                    linkBtn.innerHTML = '🌐 Voir le site';
+                    actionsDiv.appendChild(linkBtn);
+                }
+
+                if (projet.fichier_data && projet.fichier_nom) {
+                    const downloadBtn = document.createElement('button');
+                    downloadBtn.className = 'btn btn-download';
+                    downloadBtn.innerHTML = `💾 Fichier : ${projet.fichier_nom}`;
+                    
+                    downloadBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        declencherTelechargement(projet.fichier_data, projet.fichier_nom);
+                    });
+                    actionsDiv.appendChild(downloadBtn);
+                }
+
+                projetsContainer.appendChild(card);
+            });
+        }
+
         async function chargerPortfolio() {
             try {
                 const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
-                if (!response.ok) throw new Error("Erreur de récupération.");
+                if (!response.ok) throw new Error("Erreur serveur.");
                 
                 const data = await response.json();
 
-                // 1. Rendu du Profil
-                const profil = data.profil;
+                // ─── CORRECTION ET VÉRIFICATION DE LA PHOTO DE PROFIL ───
+                const profil = data.profil || {};
+                
+                // Si profil.photo existe et n'est pas vide, on l'utilise. Sinon, image par défaut en Noir et Blanc.
+                const urlPhotoProfil = (profil.photo && profil.photo.trim() !== "") 
+                    ? profil.photo 
+                    : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80";
+
                 document.getElementById('profile-container').innerHTML = `
-                    <img class="profile-img" src="${profil.photo || 'https://via.placeholder.com/150'}" alt="Avatar">
+                    <img class="profile-img" src="${urlPhotoProfil}" alt="Avatar" onerror="this.src='https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80'">
                     <div class="profile-info">
                         <h1>${profil.nom || 'Votre Nom'}</h1>
                         <h2>${profil.titre || 'Votre Poste'}</h2>
-                        <p>${profil.bio || 'Aucune biographie rédigée.'}</p>
+                        <p>${profil.bio || 'Aucune biographie.'}</p>
                         <div class="social-links">
-                            ${profil.github ? `<a href="${profil.github}" target="_blank">🔗 GitHub</a>` : ''}
-                            ${profil.instagram ? `<a href="${profil.instagram}" target="_blank">🔗 Instagram</a>` : ''}
+                            ${profil.github ? `<a href="${profil.github}" target="_blank">GitHub</a>` : ''}
+                            ${profil.instagram ? `<a href="${profil.instagram}" target="_blank">Instagram</a>` : ''}
                         </div>
                     </div>
                 `;
 
-                // Vérification si des projets existent
-                const projetsContainer = document.getElementById('projects-container');
                 if (!data.projets || data.projets.length === 0) {
-                    projetsContainer.innerHTML = `<div class="loading">Aucun projet disponible.</div>`;
+                    document.getElementById('projects-container').innerHTML = `<div class="loading">Aucun projet trouvé.</div>`;
                     return;
                 }
 
-                projetsContainer.innerHTML = ''; 
+                listeProjetsGlobale = data.projets;
 
-                // 2. Génération automatique des boutons de tri (Filtres)
                 const filtersContainer = document.getElementById('filters-container');
                 const categories = new Set();
-                data.projets.forEach(p => { if(p.cat) categories.add(p.cat.trim()) });
+                listeProjetsGlobale.forEach(p => { if(p.cat) categories.add(p.cat.trim()) });
 
-                // Création du bouton "Tous"
                 filtersContainer.innerHTML = `<button class="filter-btn active" data-target="all">🌟 Tous</button>`;
-                
-                // Création d'un bouton pour chaque catégorie unique trouvée
                 categories.forEach(cat => {
                     const btn = document.createElement('button');
                     btn.className = 'filter-btn';
@@ -369,97 +514,22 @@
                     filtersContainer.appendChild(btn);
                 });
 
-                // 3. Rendu des cartes projets dans la grille
-                data.projets.forEach((projet) => {
-                    const card = document.createElement('div');
-                    card.className = 'project-card';
-                    
-                    // On attache la catégorie en minuscule sur la carte pour le script de tri
-                    const projetCat = projet.cat ? projet.cat.trim().toLowerCase() : 'général';
-                    card.setAttribute('data-category', projetCat);
-
-                    let imageHTML = `<div class="project-img-placeholder">📁</div>`;
-                    if (projet.photo && projet.photo.startsWith('data:image')) {
-                        imageHTML = `<img class="project-img" src="${projet.photo}" alt="${projet.titre}">`;
-                    }
-
-                    const dateAffichage = projet.date ? projet.date : new Date().toLocaleDateString('fr-FR');
-
-                    card.innerHTML = `
-                        ${imageHTML}
-                        <div class="project-content">
-                            <div class="project-meta">
-                                <span class="project-cat">${projet.cat || 'Général'}</span>
-                                <span class="project-date">📅 ${dateAffichage}</span>
-                            </div>
-                            <h3 class="project-title">${projet.titre}</h3>
-                            <p class="project-desc">${projet.desc || 'Aucune description.'}</p>
-                            ${projet.tech ? `<div class="project-tech">🛠️ ${projet.tech}</div>` : ''}
-                            <div class="project-actions"></div>
-                        </div>
-                    `;
-
-                    // Injection des boutons d'action (Lien et Téléchargement)
-                    const actionsDiv = card.querySelector('.project-actions');
-
-                    if (projet.link && projet.link.trim() !== "") {
-                        const linkBtn = document.createElement('a');
-                        linkBtn.className = 'btn btn-link';
-                        linkBtn.href = projet.link;
-                        linkBtn.target = '_blank';
-                        linkBtn.innerHTML = '🌐 Voir le site';
-                        actionsDiv.appendChild(linkBtn);
-                    }
-
-                    const dataFichier = projet.fichier_data || '';
-                    const nomFichier = projet.fichier_nom || '';
-
-                    if (dataFichier.trim() !== "" && nomFichier.trim() !== "") {
-                        const downloadBtn = document.createElement('button');
-                        downloadBtn.className = 'btn btn-download';
-                        downloadBtn.innerHTML = `💾 Télécharger : ${nomFichier}`;
-                        
-                        // Écouteur de clic direct et isolé pour le téléchargement
-                        downloadBtn.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            declencherTelechargement(dataFichier, nomFichier);
-                        });
-                        actionsDiv.appendChild(downloadBtn);
-                    }
-
-                    projetsContainer.appendChild(card);
-                });
-
-                // 4. Logique d'activation du Tri au clic sur les boutons de filtres
                 const boutonsFiltres = document.querySelectorAll('.filter-btn');
-                const cartesProjets = document.querySelectorAll('.project-card');
-
                 boutonsFiltres.forEach(bouton => {
                     bouton.addEventListener('click', () => {
-                        // Gérer le style actif sur les boutons
                         boutonsFiltres.forEach(b => b.classList.remove('active'));
                         bouton.classList.add('active');
-
-                        const cible = bouton.getAttribute('data-target');
-
-                        // Filtrer les cartes sans toucher au DOM profond (les clics restent actifs)
-                        cartesProjets.forEach(carte => {
-                            const categorieCarte = carte.getAttribute('data-category');
-                            
-                            if (cible === 'all' || categorieCarte === cible) {
-                                carte.classList.remove('hidden'); // On affiche
-                            } else {
-                                carte.classList.add('hidden');    // On masque
-                            }
-                        });
+                        categorieActive = bouton.getAttribute('data-target');
+                        appliquerAffichageFiltresEtTri();
                     });
                 });
 
+                document.getElementById('sort-date-select').addEventListener('change', appliquerAffichageFiltresEtTri);
+                appliquerAffichageFiltresEtTri();
+
             } catch (error) {
                 console.error(error);
-                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de chargement du profil.</div>`;
-                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ef4444;">Impossible de se connecter à GitHub.</div>`;
+                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ffffff;">Erreur lors de la synchronisation des données GitHub.</div>`;
             }
         }
 
