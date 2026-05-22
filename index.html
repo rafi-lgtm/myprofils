@@ -86,8 +86,35 @@
             font-weight: bold;
         }
 
-        .social-links a:hover {
-            text-decoration: underline;
+        /* ══════════ SYSTÈME DE TRI (FILTRES) ══════════ */
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            color: var(--text-muted);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--bg-input);
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .filter-btn:hover {
+            color: var(--text-main);
+            border-color: var(--accent);
+        }
+
+        .filter-btn.active {
+            background: var(--accent);
+            color: var(--text-main);
+            border-color: var(--accent);
         }
 
         /* ══════════ GRILLE DE PROJETS ══════════ */
@@ -112,7 +139,12 @@
             display: flex;
             flex-direction: column;
             box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            transition: transform 0.2s;
+            transition: transform 0.2s, opacity 0.3s;
+        }
+
+        /* Quand un projet est masqué par le tri */
+        .project-card.hidden {
+            display: none;
         }
 
         .project-card:hover {
@@ -184,13 +216,14 @@
             border: 1px solid #222538;
         }
 
-        /* 🛠️ CORRECTIF DES ACTIONS (Rendu flex propre et cliquable) */
+        /* ══════════ BOUTONS CLIQUABLES ══════════ */
         .project-actions {
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin-top: auto; /* Force à rester tout en bas */
-            z-index: 10;       /* Assure la priorité du clic */
+            margin-top: auto; 
+            position: relative;
+            z-index: 10;       
         }
 
         .btn {
@@ -246,6 +279,9 @@
             <div class="loading">Chargement du profil...</div>
         </header>
 
+        <!-- 📑 ZONE DE TRI / FILTRES -->
+        <div class="filter-container" id="filters-container"></div>
+
         <!-- 📁 BLOC PROJETS -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
@@ -256,10 +292,10 @@
     </div>
 
     <script>
-        // Configuration : Remplace par l'URL brute de ton data.json sur GitHub
+        // URL brute de ton fichier data.json sur GitHub
         const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json";
 
-        // Moteur de téléchargement universel pour les fichiers (Word, PPT, F3D, 3D, etc.)
+        // Moteur de téléchargement pour les fichiers (Word, PPT, F3D, etc.)
         function declencherTelechargement(base64Data, nomFichier) {
             try {
                 const byteCharacters = atob(base64Data);
@@ -268,7 +304,6 @@
                     byteNumbers[i] = byteCharacters.charCodeAt(i);
                 }
                 const byteArray = new Uint8Array(byteNumbers);
-                
                 const blob = new Blob([byteArray], { type: 'application/octet-stream' });
                 const blobUrl = URL.createObjectURL(blob);
                 
@@ -285,7 +320,7 @@
             }
         }
 
-        // Chargement dynamique des données depuis GitHub
+        // Fonction principale de chargement
         async function chargerPortfolio() {
             try {
                 const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
@@ -308,20 +343,41 @@
                     </div>
                 `;
 
-                // 2. Rendu des Projets
+                // Vérification si des projets existent
                 const projetsContainer = document.getElementById('projects-container');
                 if (!data.projets || data.projets.length === 0) {
                     projetsContainer.innerHTML = `<div class="loading">Aucun projet disponible.</div>`;
                     return;
                 }
 
-                projetsContainer.innerHTML = ''; // Vide les éléments de chargement
+                projetsContainer.innerHTML = ''; 
 
+                // 2. Génération automatique des boutons de tri (Filtres)
+                const filtersContainer = document.getElementById('filters-container');
+                const categories = new Set();
+                data.projets.forEach(p => { if(p.cat) categories.add(p.cat.trim()) });
+
+                // Création du bouton "Tous"
+                filtersContainer.innerHTML = `<button class="filter-btn active" data-target="all">🌟 Tous</button>`;
+                
+                // Création d'un bouton pour chaque catégorie unique trouvée
+                categories.forEach(cat => {
+                    const btn = document.createElement('button');
+                    btn.className = 'filter-btn';
+                    btn.setAttribute('data-target', cat.toLowerCase());
+                    btn.textContent = cat;
+                    filtersContainer.appendChild(btn);
+                });
+
+                // 3. Rendu des cartes projets dans la grille
                 data.projets.forEach((projet) => {
                     const card = document.createElement('div');
                     card.className = 'project-card';
+                    
+                    // On attache la catégorie en minuscule sur la carte pour le script de tri
+                    const projetCat = projet.cat ? projet.cat.trim().toLowerCase() : 'général';
+                    card.setAttribute('data-category', projetCat);
 
-                    // Image ou icône générique
                     let imageHTML = `<div class="project-img-placeholder">📁</div>`;
                     if (projet.photo && projet.photo.startsWith('data:image')) {
                         imageHTML = `<img class="project-img" src="${projet.photo}" alt="${projet.titre}">`;
@@ -329,7 +385,6 @@
 
                     const dateAffichage = projet.date ? projet.date : new Date().toLocaleDateString('fr-FR');
 
-                    // Création de la structure de base
                     card.innerHTML = `
                         ${imageHTML}
                         <div class="project-content">
@@ -344,10 +399,9 @@
                         </div>
                     `;
 
-                    // Injection sécurisée des boutons pour qu'ils soient interactifs
+                    // Injection des boutons d'action (Lien et Téléchargement)
                     const actionsDiv = card.querySelector('.project-actions');
 
-                    // 1. Bouton Lien (Site Web)
                     if (projet.link && projet.link.trim() !== "") {
                         const linkBtn = document.createElement('a');
                         linkBtn.className = 'btn btn-link';
@@ -357,7 +411,6 @@
                         actionsDiv.appendChild(linkBtn);
                     }
 
-                    // 2. Bouton Téléchargement (Fichiers joints)
                     const dataFichier = projet.fichier_data || '';
                     const nomFichier = projet.fichier_nom || '';
 
@@ -366,7 +419,7 @@
                         downloadBtn.className = 'btn btn-download';
                         downloadBtn.innerHTML = `💾 Télécharger : ${nomFichier}`;
                         
-                        // L'événement de clic est lié directement à l'élément du DOM ici
+                        // Écouteur de clic direct et isolé pour le téléchargement
                         downloadBtn.addEventListener('click', (e) => {
                             e.preventDefault();
                             e.stopPropagation();
@@ -378,10 +431,35 @@
                     projetsContainer.appendChild(card);
                 });
 
+                // 4. Logique d'activation du Tri au clic sur les boutons de filtres
+                const boutonsFiltres = document.querySelectorAll('.filter-btn');
+                const cartesProjets = document.querySelectorAll('.project-card');
+
+                boutonsFiltres.forEach(bouton => {
+                    bouton.addEventListener('click', () => {
+                        // Gérer le style actif sur les boutons
+                        boutonsFiltres.forEach(b => b.classList.remove('active'));
+                        bouton.classList.add('active');
+
+                        const cible = bouton.getAttribute('data-target');
+
+                        // Filtrer les cartes sans toucher au DOM profond (les clics restent actifs)
+                        cartesProjets.forEach(carte => {
+                            const categorieCarte = carte.getAttribute('data-category');
+                            
+                            if (cible === 'all' || categorieCarte === cible) {
+                                carte.classList.remove('hidden'); // On affiche
+                            } else {
+                                carte.classList.add('hidden');    // On masque
+                            }
+                        });
+                    });
+                });
+
             } catch (error) {
                 console.error(error);
-                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de chargement.</div>`;
-                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ef4444;">Impossible de synchroniser avec GitHub. Vérifiez DATA_URL.</div>`;
+                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de chargement du profil.</div>`;
+                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ef4444;">Impossible de se connecter à GitHub.</div>`;
             }
         }
 
