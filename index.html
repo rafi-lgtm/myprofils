@@ -7,8 +7,10 @@
     <style>
         /* ══════════ VARIABLES DE DESIGN (THEMES) ══════════ */
         :root {
-            /* Mode Sombre par défaut */
-            --bg-main: #000000;
+            /* Mode Sombre par défaut + Motif Grille Sombre */
+            --bg-main: #0a0a0a;
+            --bg-pattern: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
             --bg-card: #121212;
             --bg-input: #222222;
             --border-color: #333333;
@@ -20,8 +22,10 @@
         }
 
         [data-theme="light"] {
-            /* Mode Clair */
-            --bg-main: #f5f5f7;
+            /* Mode Clair + Motif Grille Clair */
+            --bg-main: #f4f4f6;
+            --bg-pattern: linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+                          linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px);
             --bg-card: #ffffff;
             --bg-input: #eaeaea;
             --border-color: #dddddd;
@@ -41,6 +45,9 @@
 
         body {
             background-color: var(--bg-main);
+            /* Application du motif d'arrière-plan */
+            background-image: var(--bg-pattern);
+            background-size: 24px 24px; /* Taille des carrés de la grille */
             color: var(--text-main);
             padding: 40px 20px;
         }
@@ -87,6 +94,7 @@
             align-items: center;
             gap: 25px;
             border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
         .profile-img {
@@ -162,6 +170,7 @@
             align-items: center;
             gap: 15px;
             border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
         }
 
         .filter-container {
@@ -238,6 +247,7 @@
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border-color);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
         }
 
         .project-card:hover {
@@ -433,20 +443,17 @@
             const themeIcon = document.getElementById('theme-icon');
             const themeText = document.getElementById('theme-text');
             
-            // 1. Détecter le thème sauvegardé ou la préférence système
             const themeSauvegarde = localStorage.getItem('theme');
             const preferenceSystemeClair = window.matchMedia('(prefers-color-scheme: light)').matches;
             
-            let themeActuel = "dark"; // Par défaut
+            let themeActuel = "dark"; 
             if (themeSauvegarde === "light" || (!themeSauvegarde && preferenceSystemeClair)) {
                 themeActuel = "light";
             }
 
-            // 2. Appliquer le thème initial
             document.documentElement.setAttribute('data-theme', themeActuel);
             mettreAJourInterfaceBouton(themeActuel, themeIcon, themeText);
 
-            // 3. Écouteur de clic pour changer de thème
             themeBouton.addEventListener('click', () => {
                 let nouveauTheme = document.documentElement.getAttribute('data-theme') === "dark" ? "light" : "dark";
                 document.documentElement.setAttribute('data-theme', nouveauTheme);
@@ -465,7 +472,7 @@
             }
         }
 
-        // ══════════ RESTE DE TON LOGICIEL PORTFOLIO ══════════
+        // ══════════ RESTE DU LOGICIEL PORTFOLIO ══════════
         function declencherTelechargement(base64Data, nomFichier) {
             try {
                 const byteCharacters = atob(base64Data);
@@ -492,11 +499,11 @@
 
         function extraireDate(projet) {
             if (!projet.date) return new Date(0);
-            const parties = projet.date.split('/');
+            const parties = project.date ? projet.date.split('/') : [];
             if (parties.length === 3) {
                 return new Date(parties[2], parties[1] - 1, parties[0]);
             }
-            return new Date(projet.date);
+            return new Date(projet.date || 0);
         }
 
         function appliquerAffichageFiltresEtTri() {
@@ -572,7 +579,6 @@
         }
 
         async function chargerPortfolio() {
-            // Initialisation du thème dès que le DOM est prêt
             initialiserTheme();
 
             try {
