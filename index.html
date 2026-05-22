@@ -47,6 +47,7 @@
             border: 1px solid var(--border-color);
         }
 
+        /* Photo de profil personnalisée ou chargée */
         .profile-img {
             width: 100px;
             height: 100px;
@@ -54,6 +55,23 @@
             object-fit: cover;
             border: 2px solid var(--accent-white);
             background: var(--bg-main);
+        }
+
+        /* Version Style Noir Minimaliste (Par défaut) */
+        .profile-img-black {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid var(--accent-white);
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-white);
+            text-transform: uppercase;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
         }
 
         .profile-info h1 {
@@ -341,12 +359,10 @@
 <body>
 
     <div class="container">
-        <!-- 👩‍💻 PROFILE -->
         <header id="profile-container">
             <div class="loading">Chargement du profil...</div>
         </header>
 
-        <!-- 📑 MENU FILTRES ET TRI -->
         <div class="controls-wrapper">
             <div class="filter-container" id="filters-container"></div>
             
@@ -359,7 +375,6 @@
             </div>
         </div>
 
-        <!-- 📁 GRILLE DE PROJETS -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
             <div id="diagnostic-container"></div>
@@ -371,8 +386,6 @@
 
     <script>
         const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json";
-        // Ton lien Instagram configuré comme image par défaut
-        const DEFAULT_PHOTO = "https://scontent-cdg4-3.cdninstagram.com/v/t51.2885-19/504524423_17845270482514907_7013029318023959552_n.jpg?stp=dst-jpg_s150x150_tt6&efg=eyJ2ZW5jb2RlX3RhZyI6InByb2ZpbGVfcGljLmRqYW5nby45MjcuYzIifQ&_nc_ht=scontent-cdg4-3.cdninstagram.com&_nc_cat=111&_nc_oc=Q6cZ2gGZ7oPBjz1AhTLTg1xKNaojQpkPLt1e8Bl7d0wDo-ubC_CCn7YdVXgi2_Xt9Ufv43djWyYROxe0BqNpPi6XV0xH&_nc_ohc=yfd9TwtfgW0Q7kNvwE1nXVy&_nc_gid=z-RxQ3v12twSiovrVvYx3w&edm=AP4sbd4BAAAA&ccb=7-5&oh=00_Af5Ty6EIZQeCvqPNkXdwFiS8Z7n7J2sK2IWOYjk_RB4mwQ&oe=6A161951&_nc_sid=7a9f4b";
         
         let listeProjetsGlobale = [];
         let categorieActive = "all";
@@ -499,12 +512,16 @@
 
                 const profil = data.profil || {};
                 const nomUtilisateur = profil.nom || 'Mon Portfolio';
-                
-                // Utilise la photo du JSON, sinon applique ton lien Instagram directement
-                const urlPhotoFinal = (profil.photo && profil.photo.trim() !== "") ? profil.photo : DEFAULT_PHOTO;
+                const initiale = nomUtilisateur.charAt(0).toUpperCase();
+
+                // Génération de la photo de profil : Utilise le JSON si dispo, sinon applique le style NOIR avec initiale
+                let photoProfilHTML = `<div class="profile-img-black">${initiale}</div>`;
+                if (profil.photo && profil.photo.trim() !== "") {
+                    photoProfilHTML = `<img class="profile-img" src="${profil.photo}" alt="Avatar" onerror="this.outerHTML='<div class=\"profile-img-black\">${initiale}</div>';">`;
+                }
 
                 document.getElementById('profile-container').innerHTML = `
-                    <img class="profile-img" src="${urlPhotoFinal}" alt="Avatar" onerror="this.src='${DEFAULT_PHOTO}';">
+                    ${photoProfilHTML}
                     <div class="profile-info">
                         <h1>${nomUtilisateur}</h1>
                         <h2>${profil.titre || 'Développeur / Concepteur'}</h2>
@@ -552,9 +569,9 @@
             } catch (error) {
                 console.error(error);
                 
-                // Même en cas de plantage total du JSON, on affiche quand même ton profil avec ta photo
+                // En cas d'erreur de chargement du JSON, on génère un profil de secours propre avec le badge noir "P"
                 document.getElementById('profile-container').innerHTML = `
-                    <img class="profile-img" src="${DEFAULT_PHOTO}" alt="Avatar">
+                    <div class="profile-img-black">P</div>
                     <div class="profile-info">
                         <h1>Mon Portfolio</h1>
                         <h2>Développeur / Concepteur</h2>
@@ -565,7 +582,7 @@
                 document.getElementById('diagnostic-container').innerHTML = `
                     <div class="error-box">
                         <strong>❌ ÉCHEC DE LA SYNCHRONISATION GITHUB :</strong><br>
-                        Le fichier <code>data.json</code> n'a pas pu être lu sur GitHub. Vérifie sa présence à la racine de ton dépôt.
+                        Le fichier <code>data.json</code> n'a pas pu être lu. Vérifie qu'il est bien placé à la racine de ton dépôt GitHub.
                     </div>
                 `;
                 document.getElementById('projects-container').innerHTML = '';
