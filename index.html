@@ -5,16 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mon Portfolio Pro</title>
     <style>
-        /* ══════════ DESIGN NOIR & BLANC ══════════ */
+        /* ══════════ VARIABLES DE DESIGN (THEMES) ══════════ */
         :root {
+            /* Mode Sombre par défaut */
             --bg-main: #000000;
             --bg-card: #121212;
             --bg-input: #222222;
             --border-color: #333333;
-            --accent-white: #ffffff;
+            --accent-color: #ffffff;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
+            --invert-icon: 0;
             --error-color: #ff4444;
+        }
+
+        [data-theme="light"] {
+            /* Mode Clair */
+            --bg-main: #f5f5f7;
+            --bg-card: #ffffff;
+            --bg-input: #eaeaea;
+            --border-color: #dddddd;
+            --accent-color: #000000;
+            --text-main: #000000;
+            --text-muted: #666666;
+            --invert-icon: 1;
         }
 
         * {
@@ -22,6 +36,7 @@
             margin: 0;
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
         }
 
         body {
@@ -33,6 +48,33 @@
         .container {
             max-width: 1100px;
             margin: 0 auto;
+            position: relative;
+        }
+
+        /* ══════════ BOUTON THEME (DARK / LIGHT) ══════════ */
+        .theme-switch-wrapper {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+
+        .theme-btn {
+            background: var(--bg-card);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .theme-btn:hover {
+            border-color: var(--accent-color);
         }
 
         /* ══════════ EN-TÊTE PROFIL ══════════ */
@@ -47,31 +89,28 @@
             border: 1px solid var(--border-color);
         }
 
-        /* Photo de profil personnalisée ou chargée */
         .profile-img {
             width: 100px;
             height: 100px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--accent-white);
+            border: 2px solid var(--accent-color);
             background: var(--bg-main);
         }
 
-        /* Version Style Noir Minimaliste (Par défaut) */
         .profile-img-black {
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            border: 2px solid var(--accent-white);
+            border: 2px solid var(--accent-color);
             background: #000000;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 32px;
             font-weight: 700;
-            color: var(--accent-white);
+            color: #ffffff;
             text-transform: uppercase;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.05);
         }
 
         .profile-info h1 {
@@ -140,18 +179,17 @@
             cursor: pointer;
             font-size: 13px;
             font-weight: 600;
-            transition: all 0.2s;
         }
 
         .filter-btn:hover {
-            color: var(--accent-white);
-            border-color: var(--accent-white);
+            color: var(--accent-color);
+            border-color: var(--accent-color);
         }
 
         .filter-btn.active {
-            background: var(--accent-white);
+            background: var(--accent-color);
             color: var(--bg-main);
-            border-color: var(--accent-white);
+            border-color: var(--accent-color);
         }
 
         .sort-container {
@@ -176,10 +214,6 @@
             outline: none;
         }
 
-        .sort-select:focus {
-            border-color: var(--accent-white);
-        }
-
         /* ══════════ GRILLE DE PROJETS ══════════ */
         h2.section-title {
             font-size: 18px;
@@ -187,7 +221,7 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             color: var(--text-main);
-            border-left: 3px solid var(--accent-white);
+            border-left: 3px solid var(--accent-color);
             padding-left: 10px;
         }
 
@@ -204,12 +238,10 @@
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border-color);
-            transition: transform 0.2s, border-color 0.2s;
         }
 
         .project-card:hover {
-            transform: translateY(-3px);
-            border-color: var(--accent-white);
+            border-color: var(--accent-color);
         }
 
         .project-img {
@@ -291,9 +323,6 @@
             flex-direction: column;
             gap: 8px;
             margin-top: auto; 
-            position: relative;   
-            z-index: 999;         
-            pointer-events: auto; 
         }
 
         .btn {
@@ -309,18 +338,17 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: all 0.2s;
         }
 
         .btn-link {
-            background: var(--accent-white);
+            background: var(--accent-color);
             color: var(--bg-main);
-            border: 1px solid var(--accent-white);
+            border: 1px solid var(--accent-color);
         }
 
         .btn-link:hover {
             background: transparent;
-            color: var(--accent-white);
+            color: var(--accent-color);
         }
 
         .btn-download {
@@ -330,7 +358,7 @@
         }
 
         .btn-download:hover {
-            border-color: var(--accent-white);
+            border-color: var(--accent-color);
             background: var(--bg-input);
         }
 
@@ -343,26 +371,34 @@
         }
 
         .error-box {
-            background: #1a0a0a;
+            background: rgba(255, 68, 68, 0.05);
             border: 1px dashed var(--error-color);
-            color: #ffcccc;
+            color: var(--error-color);
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
             font-family: monospace;
             font-size: 13px;
             line-height: 1.6;
-            text-align: left;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 🌓 BOUTON TOGGLE THEME -->
+        <div class="theme-switch-wrapper">
+            <button class="theme-btn" id="theme-toggle-btn">
+                <span id="theme-icon">☀️</span> <span id="theme-text">Mode Clair</span>
+            </button>
+        </div>
+
+        <!-- 👩‍💻 PROFILE -->
         <header id="profile-container">
             <div class="loading">Chargement du profil...</div>
         </header>
 
+        <!-- 📑 MENU FILTRES ET TRI -->
         <div class="controls-wrapper">
             <div class="filter-container" id="filters-container"></div>
             
@@ -375,6 +411,7 @@
             </div>
         </div>
 
+        <!-- 📁 GRILLE DE PROJETS -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
             <div id="diagnostic-container"></div>
@@ -390,6 +427,45 @@
         let listeProjetsGlobale = [];
         let categorieActive = "all";
 
+        // ══════════ GESTION DU MODE CLAIR / SOMBRE ══════════
+        function initialiserTheme() {
+            const themeBouton = document.getElementById('theme-toggle-btn');
+            const themeIcon = document.getElementById('theme-icon');
+            const themeText = document.getElementById('theme-text');
+            
+            // 1. Détecter le thème sauvegardé ou la préférence système
+            const themeSauvegarde = localStorage.getItem('theme');
+            const preferenceSystemeClair = window.matchMedia('(prefers-color-scheme: light)').matches;
+            
+            let themeActuel = "dark"; // Par défaut
+            if (themeSauvegarde === "light" || (!themeSauvegarde && preferenceSystemeClair)) {
+                themeActuel = "light";
+            }
+
+            // 2. Appliquer le thème initial
+            document.documentElement.setAttribute('data-theme', themeActuel);
+            mettreAJourInterfaceBouton(themeActuel, themeIcon, themeText);
+
+            // 3. Écouteur de clic pour changer de thème
+            themeBouton.addEventListener('click', () => {
+                let nouveauTheme = document.documentElement.getAttribute('data-theme') === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute('data-theme', nouveauTheme);
+                localStorage.setItem('theme', nouveauTheme);
+                mettreAJourInterfaceBouton(nouveauTheme, themeIcon, themeText);
+            });
+        }
+
+        function mettreAJourInterfaceBouton(theme, iconEl, textEl) {
+            if (theme === "light") {
+                iconEl.textContent = "🌙";
+                textEl.textContent = "Mode Sombre";
+            } else {
+                iconEl.textContent = "☀️";
+                textEl.textContent = "Mode Clair";
+            }
+        }
+
+        // ══════════ RESTE DE TON LOGICIEL PORTFOLIO ══════════
         function declencherTelechargement(base64Data, nomFichier) {
             try {
                 const byteCharacters = atob(base64Data);
@@ -496,6 +572,9 @@
         }
 
         async function chargerPortfolio() {
+            // Initialisation du thème dès que le DOM est prêt
+            initialiserTheme();
+
             try {
                 const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
                 
@@ -514,7 +593,6 @@
                 const nomUtilisateur = profil.nom || 'Mon Portfolio';
                 const initiale = nomUtilisateur.charAt(0).toUpperCase();
 
-                // Génération de la photo de profil : Utilise le JSON si dispo, sinon applique le style NOIR avec initiale
                 let photoProfilHTML = `<div class="profile-img-black">${initiale}</div>`;
                 if (profil.photo && profil.photo.trim() !== "") {
                     photoProfilHTML = `<img class="profile-img" src="${profil.photo}" alt="Avatar" onerror="this.outerHTML='<div class=\"profile-img-black\">${initiale}</div>';">`;
@@ -569,7 +647,6 @@
             } catch (error) {
                 console.error(error);
                 
-                // En cas d'erreur de chargement du JSON, on génère un profil de secours propre avec le badge noir "P"
                 document.getElementById('profile-container').innerHTML = `
                     <div class="profile-img-black">P</div>
                     <div class="profile-info">
@@ -582,7 +659,7 @@
                 document.getElementById('diagnostic-container').innerHTML = `
                     <div class="error-box">
                         <strong>❌ ÉCHEC DE LA SYNCHRONISATION GITHUB :</strong><br>
-                        Le fichier <code>data.json</code> n'a pas pu être lu. Vérifie qu'il est bien placé à la racine de ton dépôt GitHub.
+                        Le fichier <code>data.json</code> n'a pas pu être lu. Vérifie sa présence sur ton dépôt GitHub.
                     </div>
                 `;
                 document.getElementById('projects-container').innerHTML = '';
