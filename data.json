@@ -1,5 +1,16 @@
 {
-  "projets": [],
+  "projets": [
+    {
+      "titre": "mon site internet",
+      "cat": "site",
+      "tech": "HTML",
+      "link": "https://rafi-lgtm.github.io/myprofils/",
+      "desc": "ce site internet sert a referencer mes project pour mon futur\n\nps : idée de ma mami",
+      "photo": "",
+      "fichier_nom": "",
+      "fichier_data": ""
+    }
+  ],
   "profil": {
     "nom": "rafael",
     "titre": "le denn",
