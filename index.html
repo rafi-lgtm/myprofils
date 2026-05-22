@@ -14,6 +14,7 @@
             --accent-white: #ffffff;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
+            --error-color: #ff4444;
         }
 
         * {
@@ -198,12 +199,12 @@
             height: 180px;
             object-fit: cover;
             background: var(--bg-main);
-            filter: grayscale(100%); /* Force les images des projets en NB au survol si désiré */
+            filter: grayscale(100%);
             transition: filter 0.3s;
         }
         
         .project-card:hover .project-img {
-            filter: grayscale(0%); /* Revient en couleur au survol */
+            filter: grayscale(0%);
         }
 
         .project-img-placeholder {
@@ -267,7 +268,6 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ══════════ ACTIONS DE CLIC SÉCURISÉES ══════════ */
         .project-actions {
             display: flex;
             flex-direction: column;
@@ -323,6 +323,20 @@
             font-size: 15px;
             letter-spacing: 1px;
         }
+
+        /* Boîte de diagnostic d'erreur */
+        .error-box {
+            background: #1a0a0a;
+            border: 1px dashed var(--error-color);
+            color: #ffcccc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -349,6 +363,7 @@
         <!-- 📁 GRILLE DE PROJETS -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
+            <div id="diagnostic-container"></div>
             <div class="projects-grid" id="projects-container">
                 <div class="loading">Chargement des projets...</div>
             </div>
@@ -356,6 +371,7 @@
     </div>
 
     <script>
+        // ⚠️ VÉRIFIE BIEN CETTE URL : y a-t-il deux fois "/main/" dans ton arborescence GitHub réelle ?
         const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/main/data.json";
         
         let listeProjetsGlobale = [];
@@ -418,7 +434,7 @@
                 card.className = 'project-card';
 
                 let imageHTML = `<div class="project-img-placeholder">📁</div>`;
-                if (projet.photo && projet.photo.startsWith('data:image')) {
+                if (projet.photo && (projet.photo.startsWith('data:image') || projet.photo.startsWith('http'))) {
                     imageHTML = `<img class="project-img" src="${projet.photo}" alt="${projet.titre}">`;
                 }
 
@@ -468,15 +484,21 @@
 
         async function chargerPortfolio() {
             try {
+                // Utilisation d'un paramètre dynamique pour forcer la mise à jour contre le cache GitHub
                 const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
-                if (!response.ok) throw new Error("Erreur serveur.");
                 
-                const data = await response.json();
+                if (!response.ok) {
+                    throw new Error(`Erreur HTTP ! Statut : ${response.status} (Vérifie le lien vers ton fichier JSON)`);
+                }
+                
+                let data;
+                try {
+                    data = await response.json();
+                } catch (jsonError) {
+                    throw new Error(`Le fichier a été trouvé, mais ce n'est pas un JSON valide. (Vérifie s'il manque une virgule ou des guillemets). Détail : ${jsonError.message}`);
+                }
 
-                // ─── CORRECTION ET VÉRIFICATION DE LA PHOTO DE PROFIL ───
                 const profil = data.profil || {};
-                
-                // Si profil.photo existe et n'est pas vide, on l'utilise. Sinon, image par défaut en Noir et Blanc.
                 const urlPhotoProfil = (profil.photo && profil.photo.trim() !== "") 
                     ? profil.photo 
                     : "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=150&q=80";
@@ -495,7 +517,7 @@
                 `;
 
                 if (!data.projets || data.projets.length === 0) {
-                    document.getElementById('projects-container').innerHTML = `<div class="loading">Aucun projet trouvé.</div>`;
+                    document.getElementById('projects-container').innerHTML = `<div class="loading">Aucun projet trouvé dans le fichier JSON.</div>`;
                     return;
                 }
 
@@ -529,7 +551,18 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ffffff;">Erreur lors de la synchronisation des données GitHub.</div>`;
+                // Affichage précis de la nature du problème pour t'aider à corriger
+                document.getElementById('diagnostic-container').innerHTML = `
+                    <div class="error-box">
+                        <strong>❌ ÉCHEC DE LA SYNCHRONISATION GITHUB :</strong><br>
+                        ${error.message}<br><br>
+                        <em>Pistes de résolution :</em><br>
+                        1. Copie l'URL suivante dans ton navigateur pour voir si le fichier s'ouvre : <a href="${DATA_URL}" target="_blank" style="color:#fff;">Ouvrir le lien JSON</a><br>
+                        2. Si le lien donne une erreur 404, l'arborescence de ton URL <code>DATA_URL</code> dans le script HTML est incorrecte.
+                    </div>
+                `;
+                document.getElementById('projects-container').innerHTML = '';
+                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:var(--error-color);">Indisponible</div>`;
             }
         }
 
