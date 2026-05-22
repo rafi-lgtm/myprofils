@@ -17,6 +17,7 @@
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --error-color: #ff4444;
+            --accent-purple: #584cf4;
         }
 
         [data-theme="light"] {
@@ -50,10 +51,9 @@
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            position: relative;
         }
 
-        /* ══════════ BOUTON THEME (DARK / LIGHT) ══════════ */
+        /* ══════════ BOUTON THEME ══════════ */
         .theme-switch-wrapper {
             display: flex;
             justify-content: flex-end;
@@ -72,9 +72,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-
         .theme-btn:hover { border-color: var(--accent-color); }
 
         /* ══════════ EN-TÊTE PROFIL ══════════ */
@@ -87,47 +85,24 @@
             align-items: center;
             gap: 25px;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
         }
 
-        .profile-img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--accent-color);
-        }
-
-        .profile-img-black {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            border: 2px solid var(--accent-color);
-            background: #000000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 700;
-            color: #ffffff;
-            text-transform: uppercase;
-        }
-
-        .profile-info h1 { font-size: 24px; margin-bottom: 5px; font-weight: 700; }
-        .profile-info h2 { font-size: 15px; color: var(--text-main); font-weight: 500; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+        .profile-img { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent-color); }
+        .profile-img-black { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--accent-color); background: #000000; display: flex; align-items: center; justify-content: center; font-size: 32px; font-weight: 700; color: #ffffff; }
+        
+        .profile-info h1 { font-size: 24px; margin-bottom: 5px; }
+        .profile-info h2 { font-size: 14px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
         .profile-info p { color: var(--text-muted); font-size: 14px; line-height: 1.5; }
-
         .social-links { margin-top: 12px; display: flex; gap: 15px; }
         .social-links a { color: var(--text-main); text-decoration: underline; font-size: 13px; }
 
-        /* ══════════ BARRE DE CONTROLE & TRI ══════════ */
+        /* ══════════ CONTROLES ══════════ */
         .controls-wrapper {
             background: var(--bg-card);
             padding: 15px 20px;
             border-radius: 12px;
             margin-bottom: 30px;
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
             gap: 15px;
@@ -135,47 +110,14 @@
         }
 
         .filter-container { display: flex; flex-wrap: wrap; gap: 8px; }
-
-        .filter-btn {
-            background: var(--bg-input);
-            color: var(--text-muted);
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 600;
-        }
-
-        .filter-btn:hover { color: var(--accent-color); border-color: var(--accent-color); }
+        .filter-btn { background: var(--bg-input); color: var(--text-muted); padding: 8px 16px; border-radius: 6px; border: 1px solid var(--border-color); cursor: pointer; font-size: 13px; font-weight: 600; }
         .filter-btn.active { background: var(--accent-color); color: var(--bg-main); border-color: var(--accent-color); }
 
-        .sort-select {
-            background: var(--bg-input);
-            color: var(--text-main);
-            border: 1px solid var(--border-color);
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            outline: none;
-        }
+        .sort-select { background: var(--bg-input); color: var(--text-main); border: 1px solid var(--border-color); padding: 8px 12px; border-radius: 6px; outline: none; }
 
-        /* ══════════ GRILLE DE PROJETS ══════════ */
-        h2.section-title {
-            font-size: 18px;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            border-left: 3px solid var(--accent-color);
-            padding-left: 10px;
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 25px;
-        }
+        /* ══════════ GRILLE ══════════ */
+        h2.section-title { font-size: 18px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; border-left: 3px solid var(--accent-color); padding-left: 10px; }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
 
         .project-card {
             background: var(--bg-card);
@@ -184,189 +126,133 @@
             display: flex;
             flex-direction: column;
             border: 1px solid var(--border-color);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            cursor: pointer; /* Indique que la carte est cliquable */
-            position: relative;
+            cursor: pointer;
         }
+        .project-card:hover { border-color: var(--accent-purple); }
 
-        .project-card:hover { border-color: var(--accent-color); }
-
-        /* Indicateur visuel qu'il y a plusieurs images */
-        .gallery-badge {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(0,0,0,0.75);
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            font-weight: bold;
-            z-index: 2;
-        }
-
-        .project-img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            filter: grayscale(100%);
-            transition: filter 0.3s;
-        }
-        
-        .project-card:hover .project-img { filter: grayscale(0%); }
-
-        .project-img-placeholder {
-            width: 100%;
-            height: 180px;
-            background: var(--bg-input);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-            font-size: 30px;
-            border-bottom: 1px solid var(--border-color);
-        }
+        .project-img { width: 100%; height: 180px; object-fit: cover; }
+        .project-img-placeholder { width: 100%; height: 180px; background: var(--bg-input); display: flex; align-items: center; justify-content: center; font-size: 30px; border-bottom: 1px solid var(--border-color); }
 
         .project-content { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .project-meta { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 12px; }
-        .project-cat { font-weight: 700; text-transform: uppercase; }
-        .project-date { color: var(--text-muted); }
-        .project-title { font-size: 18px; margin-bottom: 10px; font-weight: 600; }
-        .project-desc { color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 20px; flex-grow: 1; }
-        .project-tech { font-size: 12px; color: var(--text-muted); background: var(--bg-main); padding: 6px 10px; border-radius: 4px; margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .project-cat { font-weight: 700; text-transform: uppercase; color: var(--accent-purple); }
+        .project-title { font-size: 18px; margin-bottom: 10px; }
+        .project-desc-short { color: var(--text-muted); font-size: 14px; line-height: 1.5; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        .click-prompt { font-size: 12px; color: var(--text-muted); margin-top: auto; font-style: italic; display: flex; align-items: center; gap: 5px; }
 
-        .project-actions { display: flex; flex-direction: column; gap: 8px; margin-top: auto; }
-
-        .btn {
-            width: 100%;
-            padding: 11px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .btn-link { background: var(--accent-color); color: var(--bg-main); border: 1px solid var(--accent-color); }
-        .btn-link:hover { background: transparent; color: var(--accent-color); }
-        .btn-download { background: transparent; color: var(--text-main); border: 1px solid var(--border-color); }
-        .btn-download:hover { border-color: var(--accent-color); background: var(--bg-input); }
-
-        .loading { text-align: center; color: var(--text-muted); padding: 50px; font-size: 15px; }
-        .error-box { background: rgba(255, 68, 68, 0.05); border: 1px dashed var(--error-color); color: var(--error-color); padding: 20px; border-radius: 8px; margin: 20px 0; font-family: monospace; font-size: 13px; }
-
-        /* ══════════ MODALE GALERIE D'IMAGES (LIGHTBOX) ══════════ */
-        .lightbox {
+        /* ══════════ FENÊTRE MODALE DÉTAILLÉE (POP-UP) ══════════ */
+        .modal-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85);
             z-index: 9999;
-            display: none; /* Masquée par défaut */
+            display: none;
             align-items: center;
             justify-content: center;
+            padding: 20px;
         }
+        .modal-overlay.active { display: flex; }
 
-        .lightbox.active { display: flex; }
-
-        .lightbox-content {
+        .modal-window {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            width: 100%;
+            max-width: 750px;
+            max-height: 90vh;
+            border-radius: 16px;
+            overflow-y: auto;
             position: relative;
-            max-width: 85%;
-            max-height: 85%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
         }
 
-        .lightbox-img {
-            max-width: 100%;
-            max-height: 75vh;
-            object-fit: contain;
-            border-radius: 6px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-
-        .lightbox-caption {
-            color: #ffffff;
-            margin-top: 15px;
-            font-size: 15px;
-            text-align: center;
-            background: rgba(0,0,0,0.6);
-            padding: 6px 16px;
-            border-radius: 20px;
-        }
-
-        .lightbox-close {
+        .modal-close-btn {
             position: absolute;
-            top: -40px;
-            right: 0;
-            color: #ffffff;
-            font-size: 35px;
-            cursor: pointer;
-            background: none;
-            border: none;
+            top: 15px; right: 20px;
+            background: rgba(0,0,0,0.5); color: #fff;
+            border: none; font-size: 28px; cursor: pointer;
+            width: 40px; height: 40px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 10;
         }
-        .lightbox-close:hover { color: var(--error-color); }
+        .modal-close-btn:hover { background: var(--error-color); }
 
-        .lightbox-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: none;
-            font-size: 28px;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
+        /* Galerie d'images dans le Pop-up */
+        .modal-gallery-container { position: relative; width: 100%; background: #000; height: 350px; display: flex; align-items: center; justify-content: center; }
+        .modal-main-img { width: 100%; height: 100%; object-fit: contain; }
+        
+        .modal-nav {
+            position: absolute; top: 50%; transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.6); color: white; border: none;
+            font-size: 24px; width: 44px; height: 44px; border-radius: 50%; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
         }
-        .lightbox-nav:hover { background: rgba(255, 255, 255, 0.25); }
-        .lightbox-prev { left: -70px; }
-        .lightbox-next { right: -70px; }
+        .modal-nav:hover { background: var(--accent-purple); }
+        .modal-prev { left: 15px; }
+        .modal-next { right: 15px; }
+        
+        .modal-gallery-counter {
+            position: absolute; bottom: 15px; background: rgba(0,0,0,0.7);
+            padding: 4px 12px; border-radius: 12px; font-size: 12px; color: #fff;
+        }
 
-        /* Masquer les flèches sur mobile si elles sortent de l'écran */
-        @media (max-width: 768px) {
-            .lightbox-prev { left: 10px; }
-            .lightbox-next { right: 10px; }
-            .lightbox-nav { background: rgba(0,0,0,0.5); }
+        /* Corps des infos dans le Pop-up */
+        .modal-body { padding: 30px; }
+        .modal-header-info { margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 15px; }
+        .modal-tag { display: inline-block; background: rgba(88, 76, 244, 0.15); color: #818cf8; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; text-transform: uppercase; margin-bottom: 10px; }
+        .modal-title { font-size: 24px; margin-bottom: 5px; }
+        .modal-date { font-size: 12px; color: var(--text-muted); }
+
+        .modal-section-title { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 8px; margin-top: 20px; }
+        .modal-desc { font-size: 15px; line-height: 1.6; color: var(--text-main); white-space: pre-line; }
+        .modal-tech-box { display: inline-block; background: var(--bg-input); padding: 6px 12px; border-radius: 6px; font-size: 13px; border: 1px solid var(--border-color); margin-top: 5px; }
+
+        /* Fichiers Attachés & Actions */
+        .attachments-list { margin-top: 10px; display: flex; flex-direction: column; gap: 8px; }
+        
+        .btn-action {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600;
+            text-decoration: none; cursor: pointer; border: none; width: 100%; justify-content: center;
         }
+        .btn-primary { background: var(--accent-purple); color: white; margin-top: 25px; }
+        .btn-primary:hover { opacity: 0.9; }
+        
+        .btn-download-item {
+            background: var(--bg-input); color: var(--text-main);
+            border: 1px solid var(--border-color); justify-content: flex-start;
+        }
+        .btn-download-item:hover { border-color: var(--accent-purple); background: rgba(88, 76, 244, 0.05); }
+
+        .loading { text-align: center; color: var(--text-muted); padding: 50px; }
+        .error-box { background: rgba(255, 68, 68, 0.05); border: 1px dashed var(--error-color); color: var(--error-color); padding: 20px; border-radius: 8px; margin: 20px 0; font-size: 13px; }
     </style>
 </head>
 <body>
 
     <div class="container">
+        <!-- 🌓 THEME -->
         <div class="theme-switch-wrapper">
             <button class="theme-btn" id="theme-toggle-btn">
                 <span id="theme-icon">☀️</span> <span id="theme-text">Mode Clair</span>
             </button>
         </div>
 
-        <header id="profile-container">
-            <div class="loading">Chargement du profil...</div>
-        </header>
+        <!-- 👨‍💻 EN-TÊTE -->
+        <header id="profile-container"><div class="loading">Chargement du profil...</div></header>
 
+        <!-- 📑 FILTRES -->
         <div class="controls-wrapper">
             <div class="filter-container" id="filters-container"></div>
-            <div class="sort-container">
+            <div>
                 <select class="sort-select" id="sort-date-select">
-                    <option value="recent">📅 Plus récents</option>
-                    <option value="ancien">⏳ Plus anciens</option>
+                    <option value="recent">📅 Récents</option>
+                    <option value="ancien">⏳ Anciens</option>
                 </select>
             </div>
         </div>
 
+        <!-- 📁 GRILLE -->
         <main>
             <h2 class="section-title">Mes Réalisations</h2>
             <div id="diagnostic-container"></div>
@@ -376,307 +262,295 @@
         </main>
     </div>
 
-    <div class="lightbox" id="lightbox-modal">
-        <div class="lightbox-content" id="lightbox-content-box">
-            <button class="lightbox-close" id="lightbox-close-btn">&times;</button>
-            <button class="lightbox-nav lightbox-prev" id="lightbox-prev-btn">&#x2039;</button>
-            <img src="" alt="Aperçu" class="lightbox-img" id="lightbox-main-img">
-            <button class="lightbox-nav lightbox-next" id="lightbox-next-btn">&#x203A;</button>
-            <div class="lightbox-caption" id="lightbox-caption-text">Image 1 / 1</div>
+    <!-- 🌐 POP-UP MODALE GLOBAL DE PROJET -->
+    <div class="modal-overlay" id="project-modal">
+        <div class="modal-window">
+            <button class="modal-close-btn" id="modal-close-btn">&times;</button>
+            
+            <!-- Zone Média (Galerie) -->
+            <div class="modal-gallery-container" id="modal-gallery-zone">
+                <button class="modal-nav modal-prev" id="modal-prev-btn">&#x2039;</button>
+                <img src="" alt="Projet" class="modal-main-img" id="modal-img-target">
+                <button class="modal-nav modal-next" id="modal-next-btn">&#x203A;</button>
+                <div class="modal-gallery-counter" id="modal-counter-target">1 / 1</div>
+            </div>
+
+            <!-- Contenu Texte et Téléchargements -->
+            <div class="modal-body">
+                <div class="modal-header-info">
+                    <div class="modal-tag" id="modal-cat-target">Catégorie</div>
+                    <h3 class="modal-title" id="modal-title-target">Nom du Projet</h3>
+                    <div class="modal-date" id="modal-date-target">Date</div>
+                </div>
+
+                <div class="modal-section-title">Description</div>
+                <p class="modal-desc" id="modal-desc-target">Détails du projet...</p>
+
+                <div id="modal-tech-section">
+                    <div class="modal-section-title">Technologies utilisées</div>
+                    <div class="modal-tech-box" id="modal-tech-target">Python, HTML</div>
+                </div>
+
+                <!-- Section Fichiers Liés -->
+                <div id="modal-attachments-section">
+                    <div class="modal-section-title">Fichiers et documents joints</div>
+                    <div class="attachments-list" id="modal-files-container"></div>
+                </div>
+
+                <!-- Lien Web Externe -->
+                <a href="#" target="_blank" class="btn-action btn-primary" id="modal-link-target">🌐 Visiter / Voir le projet en ligne</a>
+            </div>
         </div>
     </div>
 
     <script>
         const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json";
-        
         let listeProjetsGlobale = [];
         let categorieActive = "all";
+        
+        // États pour la galerie interne à la modale
+        let imagesModale = [];
+        let indexImageActive = 0;
 
-        // Variables d'état pour la Galerie
-        let imagesGalerieEnCours = [];
-        let indexImageActif = 0;
-
-        // ══════════ GESTION DU THEME ══════════
+        // ══════════ THEME ══════════
         function initialiserTheme() {
-            const themeBouton = document.getElementById('theme-toggle-btn');
-            const themeIcon = document.getElementById('theme-icon');
-            const themeText = document.getElementById('theme-text');
+            const btn = document.getElementById('theme-toggle-btn');
+            const icon = document.getElementById('theme-icon');
+            const text = document.getElementById('theme-text');
+            let stock = localStorage.getItem('theme') || "dark";
             
-            const themeSauvegarde = localStorage.getItem('theme');
-            const preferenceSystemeClair = window.matchMedia('(prefers-color-scheme: light)').matches;
-            
-            let themeActuel = "dark"; 
-            if (themeSauvegarde === "light" || (!themeSauvegarde && preferenceSystemeClair)) {
-                themeActuel = "light";
-            }
+            document.documentElement.setAttribute('data-theme', stock);
+            icon.textContent = stock === "light" ? "M12 3v1m0 16v1..." : "☀️"; // simplif
+            text.textContent = stock === "light" ? "Mode Sombre" : "Mode Clair";
 
-            document.documentElement.setAttribute('data-theme', themeActuel);
-            mettreAJourInterfaceBouton(themeActuel, themeIcon, themeText);
-
-            themeBouton.addEventListener('click', () => {
-                let nouveauTheme = document.documentElement.getAttribute('data-theme') === "dark" ? "light" : "dark";
-                document.documentElement.setAttribute('data-theme', nouveauTheme);
-                localStorage.setItem('theme', nouveauTheme);
-                mettreAJourInterfaceBouton(nouveauTheme, themeIcon, themeText);
+            btn.addEventListener('click', () => {
+                let fresh = document.documentElement.getAttribute('data-theme') === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute('data-theme', fresh);
+                localStorage.setItem('theme', fresh);
+                icon.textContent = fresh === "light" ? "🌙" : "☀️";
+                text.textContent = fresh === "light" ? "Mode Sombre" : "Mode Clair";
             });
         }
 
-        function mettreAJourInterfaceBouton(theme, iconEl, textEl) {
-            if (theme === "light") {
-                iconEl.textContent = "🌙"; textEl.textContent = "Mode Sombre";
-            } else {
-                iconEl.textContent = "☀️"; textEl.textContent = "Mode Clair";
-            }
-        }
+        // ══════════ CONTROLE DU POP-UP MODALE ══════════
+        function configurerEvenementsModale() {
+            const overlay = document.getElementById('project-modal');
+            const closeBtn = document.getElementById('modal-close-btn');
+            const prevBtn = document.getElementById('modal-prev-btn');
+            const nextBtn = document.getElementById('modal-next-btn');
 
-        // ══════════ GESTION DE LA GALERIE (LIGHTBOX) ══════════
-        function initialiserLightbox() {
-            const modal = document.getElementById('lightbox-modal');
-            const closeBtn = document.getElementById('lightbox-close-btn');
-            const prevBtn = document.getElementById('lightbox-prev-btn');
-            const nextBtn = document.getElementById('lightbox-next-btn');
+            closeBtn.addEventListener('click', fermerProjet);
+            overlay.addEventListener('click', (e) => { if(e.target === overlay) fermerProjet(); });
 
-            // Fermer au clic sur la croix
-            closeBtn.addEventListener('click', fermerLightbox);
-            
-            // Fermer au clic à l'extérieur de l'image
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) fermerLightbox();
-            });
+            prevBtn.addEventListener('click', () => naviguerImage(-1));
+            nextBtn.addEventListener('click', () => naviguerImage(1));
 
-            // Boutons de navigation
-            prevBtn.addEventListener('click', (e) => { e.stopPropagation(); changerImage(-1); });
-            nextBtn.addEventListener('click', (e) => { e.stopPropagation(); changerImage(1); });
-
-            // Support des touches du clavier (Échap, Gauche, Droite)
             document.addEventListener('keydown', (e) => {
-                if (!modal.classList.contains('active')) return;
-                if (e.key === "Escape") fermerLightbox();
-                if (e.key === "ArrowLeft") changerImage(-1);
-                if (e.key === "ArrowRight") changerImage(1);
+                if (!overlay.classList.contains('active')) return;
+                if (e.key === "Escape") fermerProjet();
+                if (e.key === "ArrowLeft") naviguerImage(-1);
+                if (e.key === "ArrowRight") naviguerImage(1);
             });
         }
 
-        function ouvrirLightbox(listeImages) {
-            if (!listeImages || listeImages.length === 0) return;
-            
-            imagesGalerieEnCours = listeImages;
-            indexImageActif = 0;
-            
-            document.getElementById('lightbox-modal').classList.add('active');
-            mettreAJourImageLightbox();
-        }
-
-        function fermerLightbox() {
-            document.getElementById('lightbox-modal').classList.remove('active');
-        }
-
-        function changerImage(direction) {
-            indexImageActif += direction;
-            if (indexImageActif >= imagesGalerieEnCours.length) indexImageActif = 0;
-            if (indexImageActif < 0) indexImageActif = imagesGalerieEnCours.length - 1;
-            mettreAJourImageLightbox();
-        }
-
-        function mettreAJourImageLightbox() {
-            const imgEl = document.getElementById('lightbox-main-img');
-            const captionEl = document.getElementById('lightbox-caption-text');
-            const prevBtn = document.getElementById('lightbox-prev-btn');
-            const nextBtn = document.getElementById('lightbox-next-btn');
-
-            imgEl.src = imagesGalerieEnCours[indexImageActif];
-            captionEl.textContent = `Image ${indexImageActif + 1} / ${imagesGalerieEnCours.length}`;
-
-            // Masquer les flèches s'il n'y a qu'une seule image
-            if (imagesGalerieEnCours.length <= 1) {
-                prevBtn.style.display = 'none';
-                nextBtn.style.display = 'none';
-            } else {
-                prevBtn.style.display = 'flex';
-                nextBtn.style.display = 'flex';
+        function afficherProjetEnDetail(projet) {
+            // 1. Rassemblement des images
+            imagesModale = [];
+            if(projet.photos && Array.isArray(projet.photos)) {
+                imagesModale = projet.photos;
+            } else if(projet.photo && projet.photo.trim() !== "") {
+                imagesModale = [projet.photo];
             }
+
+            const galZone = document.getElementById('modal-gallery-zone');
+            if(imagesModale.length === 0) {
+                galZone.style.display = 'none';
+            } else {
+                galZone.style.display = 'flex';
+                indexImageActive = 0;
+                mettreAJourAffichageImage();
+                
+                // Masquer flèches si unique image
+                const navs = document.querySelectorAll('.modal-nav');
+                navs.forEach(n => n.style.display = imagesModale.length > 1 ? 'flex' : 'none');
+            }
+
+            // 2. Remplissage des textes fondamentaux
+            document.getElementById('modal-title-target').textContent = projet.titre;
+            document.getElementById('modal-cat-target').textContent = projet.cat || "Général";
+            document.getElementById('modal-date-target').textContent = projet.date || "Date non spécifiée";
+            document.getElementById('modal-desc-target').textContent = projet.desc || "Aucune description fournie.";
+
+            // 3. Technologies
+            const techBox = document.getElementById('modal-tech-section');
+            if(projet.tech && projet.tech.trim() !== "") {
+                techBox.style.display = 'block';
+                document.getElementById('modal-tech-target').textContent = projet.tech;
+            } else {
+                techBox.style.display = 'none';
+            }
+
+            // 4. Gestion des fichiers de téléchargements (F3D, Word, ZIP...)
+            const containerFichiers = document.getElementById('modal-files-container');
+            const sectionFichiers = document.getElementById('modal-attachments-section');
+            containerFichiers.innerHTML = "";
+
+            if (projet.fichier_data && projet.fichier_nom) {
+                sectionFichiers.style.display = 'block';
+                const fileBtn = document.createElement('button');
+                fileBtn.className = 'btn-action btn-download-item';
+                fileBtn.innerHTML = `📎 Télécharger la ressource : <strong>${projet.fichier_nom}</strong>`;
+                fileBtn.addEventListener('click', () => {
+                    declencherTelechargement(projet.fichier_data, projet.fichier_nom);
+                });
+                containerFichiers.appendChild(fileBtn);
+            } else {
+                sectionFichiers.style.display = 'none';
+            }
+
+            // 5. Lien externe
+            const linkBtn = document.getElementById('modal-link-target');
+            if(projet.link && projet.link.trim() !== "") {
+                linkBtn.style.display = 'inline-flex';
+                linkBtn.href = projet.link;
+            } else {
+                linkBtn.style.display = 'none';
+            }
+
+            // Ouvrir la modale à l'écran
+            document.getElementById('project-modal').classList.add('active');
+            document.body.style.overflow = 'hidden'; // Empêche le scroll en arrière-plan
         }
 
-        // ══════════ PARSAGE DES DATES ET CHARGEMENT SCRIPT ══════════
-        function extraireDate(projet) {
-            if (!projet.date) return new Date(0);
-            const parties = projet.date.split('/');
-            if (parties.length === 3) return new Date(parties[2], parties[1] - 1, parties[0]);
-            return new Date(projet.date);
+        function fermerProjet() {
+            document.getElementById('project-modal').classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        function declencherTelechargement(base64Data, nomFichier) {
+        function naviguerImage(direction) {
+            if(imagesModale.length <= 1) return;
+            indexImageActive += direction;
+            if(indexImageActive >= imagesModale.length) indexImageActive = 0;
+            if(indexImageActive < 0) indexImageActive = imagesModale.length - 1;
+            mettreAJourAffichageImage();
+        }
+
+        function mettreAJourAffichageImage() {
+            document.getElementById('lightbox-main-img'/*ajustement id*/ || 'modal-img-target').src = imagesModale[indexImageActive];
+            document.getElementById('modal-counter-target').textContent = `${indexImageActive + 1} / ${imagesModale.length}`;
+        }
+
+        function declencherTelechargement(base64, nom) {
             try {
-                const byteCharacters = atob(base64Data);
-                const byteNumbers = new Array(byteCharacters.length);
-                for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
-                const byteArray = new Uint8Array(byteNumbers);
-                const blob = new Blob([byteArray], { type: 'application/octet-stream' });
-                const blobUrl = URL.createObjectURL(blob);
-                const link = document.createElement('a');
-                link.href = blobUrl; link.download = nomFichier;
-                document.body.appendChild(link); link.click();
-                document.body.removeChild(link); URL.revokeObjectURL(blobUrl);
-            } catch (error) { alert("Erreur lors du téléchargement : " + error.message); }
+                const bChars = atob(base64.includes(',') ? base64.split(',')[1] : base64);
+                const bNumbers = new Array(bChars.length);
+                for (let i = 0; i < bChars.length; i++) bNumbers[i] = bChars.charCodeAt(i);
+                const blob = new Blob([new Uint8Array(bNumbers)], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a'); a.href = url; a.download = nom;
+                document.body.appendChild(a); a.click(); document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch(e) { alert("Erreur de décodage du fichier : " + e.message); }
         }
 
-        function appliquerAffichageFiltresEtTri() {
-            const projetsContainer = document.getElementById('projects-container');
-            const triOrdre = document.getElementById('sort-date-select').value;
-
-            let projetsTraites = [...listeProjetsGlobale];
-            projetsTraites.sort((a, b) => {
-                const dateA = extraireDate(a); const dateB = extraireDate(b);
-                return triOrdre === 'recent' ? dateB - dateA : dateA - dateB;
+        // ══════════ COUPLAGE ET AFFICHAGE GRILLE ══════════
+        function fabriquerGrilleProjets() {
+            const container = document.getElementById('projects-container');
+            const tri = document.getElementById('sort-date-select').value;
+            
+            let copies = [...listeProjetsGlobale];
+            copies.sort((a,b) => {
+                const dA = a.date ? new Date(a.date.split('/').reverse().join('-')) : new Date(0);
+                const dB = b.date ? new Date(b.date.split('/').reverse().join('-')) : new Date(0);
+                return tri === 'recent' ? dB - dA : dA - dB;
             });
 
-            projetsContainer.innerHTML = '';
+            container.innerHTML = "";
 
-            projetsTraites.forEach((projet) => {
-                const catProjet = projet.cat ? projet.cat.trim() : 'Général';
-                if (categorieActive !== 'all' && catProjet.toLowerCase() !== categorieActive.toLowerCase()) return;
-
-                // Extraction de toutes les images disponibles pour la galerie
-                let toutesLesImages = [];
-                if (projet.photos && Array.isArray(projet.photos)) {
-                    toutesLesImages = projet.photos;
-                } else if (projet.photo && projet.photo.trim() !== "") {
-                    toutesLesImages = [projet.photo];
-                }
+            copies.forEach(p => {
+                const cat = p.cat ? p.cat.trim() : 'Général';
+                if(categorieActive !== 'all' && cat.toLowerCase() !== categorieActive.toLowerCase()) return;
 
                 const card = document.createElement('div');
                 card.className = 'project-card';
 
-                // Gestion du badge si album multi-images
-                let badgeHTML = toutesLesImages.length > 1 ? `<div class="gallery-badge">📸 ${toutesLesImages.length} images</div>` : '';
-
-                // Image principale à afficher en couverture
-                let imageHTML = `<div class="project-img-placeholder">📁</div>`;
-                if (toutesLesImages.length > 0) {
-                    imageHTML = `<img class="project-img" src="${toutesLesImages[0]}" alt="${projet.titre}">`;
-                }
-
-                const dateAffichage = projet.date ? projet.date : new Date().toLocaleDateString('fr-FR');
+                let imgSource = (p.photos && p.photos.length > 0) ? p.photos[0] : p.photo;
+                let coverHTML = imgSource ? `<img class="project-img" src="${imgSource}" alt="">` : `<div class="project-img-placeholder">📁</div>`;
 
                 card.innerHTML = `
-                    ${badgeHTML}
-                    ${imageHTML}
+                    ${coverHTML}
                     <div class="project-content">
                         <div class="project-meta">
-                            <span class="project-cat">${catProjet}</span>
-                            <span class="project-date">${dateAffichage}</span>
+                            <span class="project-cat">${cat}</span>
+                            <span>${p.date || ''}</span>
                         </div>
-                        <h3 class="project-title">${projet.titre}</h3>
-                        <p class="project-desc">${projet.desc || 'Aucune description.'}</p>
-                        ${projet.tech ? `<div class="project-tech">🛠️ ${projet.tech}</div>` : ''}
-                        <div class="project-actions"></div>
+                        <h3 class="project-title">${p.titre}</h3>
+                        <p class="project-desc-short">${p.desc || 'Aucune description disponible.'}</p>
+                        <div class="click-prompt">🔍 Cliquer pour voir les détails & fichiers</div>
                     </div>
                 `;
 
-                // Rendre TOUTE la carte cliquable pour lancer la galerie
-                card.addEventListener('click', (e) => {
-                    // Empêcher l'ouverture de la galerie si on clique sur un bouton de téléchargement ou un lien externe
-                    if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
-                    ouvrirLightbox(toutesLesImages);
-                });
-
-                const actionsDiv = card.querySelector('.project-actions');
-
-                if (projet.link && projet.link.trim() !== "") {
-                    const linkBtn = document.createElement('a');
-                    linkBtn.className = 'btn btn-link'; linkBtn.href = projet.link; linkBtn.target = '_blank';
-                    linkBtn.innerHTML = '🌐 Voir le site';
-                    actionsDiv.appendChild(linkBtn);
-                }
-
-                if (projet.fichier_data && projet.fichier_nom) {
-                    const downloadBtn = document.createElement('button');
-                    downloadBtn.className = 'btn btn-download'; downloadBtn.innerHTML = `💾 Fichier : ${projet.fichier_nom}`;
-                    downloadBtn.addEventListener('click', (e) => {
-                        e.preventDefault(); e.stopPropagation();
-                        declencherTelechargement(projet.fichier_data, projet.fichier_nom);
-                    });
-                    actionsDiv.appendChild(downloadBtn);
-                }
-
-                projetsContainer.appendChild(card);
+                // Clic sur n'importe quel point de la carte = Déploiement complet
+                card.addEventListener('click', () => afficherProjetEnDetail(p));
+                container.appendChild(card);
             });
         }
 
-        async function chargerPortfolio() {
+        // ══════════ CORPS PRINCIPAL ══════════
+        async function run() {
             initialiserTheme();
-            initialiserLightbox();
+            configurerEvenementsModale();
 
             try {
-                const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
-                if (!response.ok) throw new Error(`Erreur HTTP ! Statut : ${response.status}`);
+                const res = await fetch(`${DATA_URL}?t=${Date.now()}`);
+                const data = await res.json();
                 
-                let data = await response.json();
-                const profil = data.profil || {};
-                const nomUtilisateur = profil.nom || 'Mon Portfolio';
-                const initiale = nomUtilisateur.charAt(0).toUpperCase();
-
-                let photoProfilHTML = `<div class="profile-img-black">${initiale}</div>`;
-                if (profil.photo && profil.photo.trim() !== "") {
-                    photoProfilHTML = `<img class="profile-img" src="${profil.photo}" alt="Avatar" onerror="this.outerHTML='<div class=\"profile-img-black\">${initiale}</div>';">`;
-                }
-
+                // Profil construct
+                const prof = data.profil || {};
+                const user = prof.nom || 'Portfolio';
                 document.getElementById('profile-container').innerHTML = `
-                    ${photoProfilHTML}
+                    <div class="profile-img-black">${user.charAt(0)}</div>
                     <div class="profile-info">
-                        <h1>${nomUtilisateur}</h1>
-                        <h2>${profil.titre || 'Développeur / Concepteur'}</h2>
-                        <p>${profil.bio || 'Bienvenue sur mon espace personnel.'}</p>
+                        <h1>${user}</h1>
+                        <h2>${prof.titre || 'Concepteur'}</h2>
+                        <p>${prof.bio || 'Découvrez mon espace de travail et mes créations.'}</p>
                         <div class="social-links">
-                            ${profil.github ? `<a href="${profil.github}" target="_blank">GitHub</a>` : ''}
-                            ${profil.instagram ? `<a href="${profil.instagram}" target="_blank">Instagram</a>` : ''}
+                            ${prof.github ? `<a href="${prof.github}" target="_blank">GitHub</a>` : ''}
+                            ${prof.instagram ? `<a href="${prof.instagram}" target="_blank">Instagram</a>` : ''}
                         </div>
                     </div>
                 `;
 
-                if (!data.projets || data.projets.length === 0) {
-                    document.getElementById('projects-container').innerHTML = `<div class="loading">Aucun projet trouvé.</div>`;
-                    return;
-                }
-
-                listeProjetsGlobale = data.projets;
-
-                const filtersContainer = document.getElementById('filters-container');
-                const categories = new Set();
-                listeProjetsGlobale.forEach(p => { if(p.cat) categories.add(p.cat.trim()) });
-
-                filtersContainer.innerHTML = `<button class="filter-btn active" data-target="all">🌟 Tous</button>`;
-                categories.forEach(cat => {
-                    const btn = document.createElement('button');
-                    btn.className = 'filter-btn'; btn.setAttribute('data-target', cat.toLowerCase()); btn.textContent = cat;
-                    filtersContainer.appendChild(btn);
+                listeProjetsGlobale = data.projets || [];
+                
+                // Catégories de filtres
+                const cats = new Set();
+                listeProjetsGlobale.forEach(p => { if(p.cat) cats.add(p.cat.trim()) });
+                
+                const fltBox = document.getElementById('filters-container');
+                fltBox.innerHTML = `<button class="filter-btn active" data-target="all">🌟 Tous</button>`;
+                cats.forEach(c => {
+                    fltBox.innerHTML += `<button class="filter-btn" data-target="${c.toLowerCase()}">${c}</button>`;
                 });
 
-                const boutonsFiltres = document.querySelectorAll('.filter-btn');
-                boutonsFiltres.forEach(bouton => {
-                    bouton.addEventListener('click', () => {
-                        boutonsFiltres.forEach(b => b.classList.remove('active'));
-                        bouton.classList.add('active');
-                        categorieActive = bouton.getAttribute('data-target');
-                        appliquerAffichageFiltresEtTri();
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.addEventListener('click', () => {
+                        document.querySelectorAll('.filter-btn').forEach(x => x.classList.remove('active'));
+                        b.classList.add('active');
+                        categorieActive = b.getAttribute('data-target');
+                        fabriquerGrilleProjets();
                     });
                 });
 
-                document.getElementById('sort-date-select').addEventListener('change', appliquerAffichageFiltresEtTri);
-                appliquerAffichageFiltresEtTri();
+                document.getElementById('sort-date-select').addEventListener('change', fabriquerGrilleProjets);
+                fabriquerGrilleProjets();
 
-            } catch (error) {
-                console.error(error);
-                document.getElementById('diagnostic-container').innerHTML = `
-                    <div class="error-box">
-                        <strong>❌ ÉCHEC DE LA SYNCHRONISATION GITHUB :</strong><br>
-                        Le fichier <code>data.json</code> n'a pas pu être lu.
-                    </div>
-                `;
+            } catch(e) {
+                document.getElementById('diagnostic-container').innerHTML = `<div class="error-box">Impossible de récupérer data.json depuis GitHub.</div>`;
             }
         }
 
-        window.addEventListener('DOMContentLoaded', chargerPortfolio);
+        window.addEventListener('DOMContentLoaded', run);
     </script>
 </body>
 </html>
