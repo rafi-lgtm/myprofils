@@ -120,8 +120,6 @@
         }
 
         .project-img {
-            width: 100px;
-            height: 100px;
             width: 100%;
             height: 180px;
             object-fit: cover;
@@ -186,15 +184,18 @@
             border: 1px solid #222538;
         }
 
-        /* Boutons d'action */
+        /* 🛠️ CORRECTIF DES ACTIONS (Rendu flex propre et cliquable) */
         .project-actions {
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: auto; /* Force à rester tout en bas */
+            z-index: 10;       /* Assure la priorité du clic */
         }
 
         .btn {
-            flex: 1;
-            padding: 10px;
+            width: 100%;
+            padding: 12px;
             border-radius: 6px;
             border: none;
             font-size: 13px;
@@ -206,6 +207,11 @@
             align-items: center;
             justify-content: center;
             gap: 6px;
+            transition: background 0.2s, opacity 0.2s;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
         }
 
         .btn-link {
@@ -214,14 +220,14 @@
         }
 
         .btn-download {
-            background: var(--bg-input);
-            color: var(--accent-green);
-            border: 1px solid var(--accent-green);
+            background: #1e293b;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
         }
 
         .btn-download:hover {
-            background: var(--accent-green);
-            color: var(--bg-main);
+            background: #38bdf8;
+            color: #0f172a;
         }
 
         .loading {
@@ -251,13 +257,11 @@
 
     <script>
         // Configuration : Remplace par l'URL brute de ton data.json sur GitHub
-        // Format : https://raw.githubusercontent.com/[Pseudo]/[Repo]/[Branche]/data.json
         const DATA_URL = "https://raw.githubusercontent.com/rafi-lgtm/myprofils/main/data.json";
 
         // Moteur de téléchargement universel pour les fichiers (Word, PPT, F3D, 3D, etc.)
         function declencherTelechargement(base64Data, nomFichier) {
             try {
-                // Conversion du Base64 brut vers binaire
                 const byteCharacters = atob(base64Data);
                 const byteNumbers = new Array(byteCharacters.length);
                 for (let i = 0; i < byteCharacters.length; i++) {
@@ -265,73 +269,67 @@
                 }
                 const byteArray = new Uint8Array(byteNumbers);
                 
-                // Création du Blob binaire universel
                 const blob = new Blob([byteArray], { type: 'application/octet-stream' });
                 const blobUrl = URL.createObjectURL(blob);
                 
-                // Simulation du clic de téléchargement
                 const link = document.createElement('a');
                 link.href = blobUrl;
                 link.download = nomFichier;
                 document.body.appendChild(link);
                 link.click();
                 
-                // Nettoyage de la mémoire
                 document.body.removeChild(link);
                 URL.revokeObjectURL(blobUrl);
             } catch (error) {
-                alert("Erreur lors de la reconstruction du fichier : " + error.message);
+                alert("Erreur lors du téléchargement : " + error.message);
             }
         }
 
         // Chargement dynamique des données depuis GitHub
         async function chargerPortfolio() {
             try {
-                // Utilisation d'un timestamp pour éviter la mise en cache navigateur
                 const response = await fetch(`${DATA_URL}?t=${Date.now()}`);
-                if (!response.ok) throw new Error("Impossible de récupérer le fichier de données.");
+                if (!response.ok) throw new Error("Erreur de récupération.");
                 
                 const data = await response.json();
 
                 // 1. Rendu du Profil
                 const profil = data.profil;
-                const profileHTML = `
+                document.getElementById('profile-container').innerHTML = `
                     <img class="profile-img" src="${profil.photo || 'https://via.placeholder.com/150'}" alt="Avatar">
                     <div class="profile-info">
                         <h1>${profil.nom || 'Votre Nom'}</h1>
                         <h2>${profil.titre || 'Votre Poste'}</h2>
-                        <p>${profil.bio || 'Aucune biographie rédigée pour le moment.'}</p>
+                        <p>${profil.bio || 'Aucune biographie rédigée.'}</p>
                         <div class="social-links">
                             ${profil.github ? `<a href="${profil.github}" target="_blank">🔗 GitHub</a>` : ''}
                             ${profil.instagram ? `<a href="${profil.instagram}" target="_blank">🔗 Instagram</a>` : ''}
                         </div>
                     </div>
                 `;
-                document.getElementById('profile-container').innerHTML = profileHTML;
 
                 // 2. Rendu des Projets
                 const projetsContainer = document.getElementById('projects-container');
                 if (!data.projets || data.projets.length === 0) {
-                    projetsContainer.innerHTML = `<div class="loading">Aucun projet à afficher.</div>`;
+                    projetsContainer.innerHTML = `<div class="loading">Aucun projet disponible.</div>`;
                     return;
                 }
 
-                projetsContainer.innerHTML = ''; // Vide le loader
+                projetsContainer.innerHTML = ''; // Vide les éléments de chargement
 
-                data.projets.forEach((projet, index) => {
+                data.projets.forEach((projet) => {
                     const card = document.createElement('div');
                     card.className = 'project-card';
 
-                    // Détermination de l'image (si présente et au format d'image valide)
+                    // Image ou icône générique
                     let imageHTML = `<div class="project-img-placeholder">📁</div>`;
                     if (projet.photo && projet.photo.startsWith('data:image')) {
                         imageHTML = `<img class="project-img" src="${projet.photo}" alt="${projet.titre}">`;
                     }
 
-                    // Génération du contenu textuel et des badges
-                    // Si la date n'est pas présente, on met la date du jour par défaut
                     const dateAffichage = projet.date ? projet.date : new Date().toLocaleDateString('fr-FR');
 
+                    // Création de la structure de base
                     card.innerHTML = `
                         ${imageHTML}
                         <div class="project-content">
@@ -340,47 +338,53 @@
                                 <span class="project-date">📅 ${dateAffichage}</span>
                             </div>
                             <h3 class="project-title">${projet.titre}</h3>
-                            <p class="project-desc">${projet.desc || 'Aucune description fournie.'}</p>
+                            <p class="project-desc">${projet.desc || 'Aucune description.'}</p>
                             ${projet.tech ? `<div class="project-tech">🛠️ ${projet.tech}</div>` : ''}
-                            <div class="project-actions" id="actions-${index}"></div>
+                            <div class="project-actions"></div>
                         </div>
                     `;
 
-                    projetsContainer.appendChild(card);
+                    // Injection sécurisée des boutons pour qu'ils soient interactifs
+                    const actionsDiv = card.querySelector('.project-actions');
 
-                    // Injection des boutons d'actions au cas par cas
-                    const actionsContainer = document.getElementById(`actions-${index}`);
-
-                    // Bouton Voir le projet (Lien web externe)
-                    if (projet.link) {
+                    // 1. Bouton Lien (Site Web)
+                    if (projet.link && projet.link.trim() !== "") {
                         const linkBtn = document.createElement('a');
                         linkBtn.className = 'btn btn-link';
                         linkBtn.href = projet.link;
                         linkBtn.target = '_blank';
                         linkBtn.innerHTML = '🌐 Voir le site';
-                        actionsContainer.appendChild(linkBtn);
+                        actionsDiv.appendChild(linkBtn);
                     }
 
-                    // Bouton Télécharger la pièce jointe (Word, PPT, F3D, STL...)
-                    if (projet.fichier_data && projet.fichier_nom) {
+                    // 2. Bouton Téléchargement (Fichiers joints)
+                    const dataFichier = projet.fichier_data || '';
+                    const nomFichier = projet.fichier_nom || '';
+
+                    if (dataFichier.trim() !== "" && nomFichier.trim() !== "") {
                         const downloadBtn = document.createElement('button');
                         downloadBtn.className = 'btn btn-download';
-                        downloadBtn.innerHTML = `💾 ${projet.fichier_nom}`;
-                        downloadBtn.addEventListener('click', () => {
-                            declencherTelechargement(projet.fichier_data, projet.fichier_nom);
+                        downloadBtn.innerHTML = `💾 Télécharger : ${nomFichier}`;
+                        
+                        // L'événement de clic est lié directement à l'élément du DOM ici
+                        downloadBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            declencherTelechargement(dataFichier, nomFichier);
                         });
-                        actionsContainer.appendChild(downloadBtn);
+                        actionsDiv.appendChild(downloadBtn);
                     }
+
+                    projetsContainer.appendChild(card);
                 });
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de chargement du profil.</div>`;
-                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de synchronisation avec les données GitHub. Vérifiez l'URL de votre fichier data.json.</div>`;
+                document.getElementById('profile-container').innerHTML = `<div class="loading" style="color:#ef4444;">Erreur de chargement.</div>`;
+                document.getElementById('projects-container').innerHTML = `<div class="loading" style="color:#ef4444;">Impossible de synchroniser avec GitHub. Vérifiez DATA_URL.</div>`;
             }
         }
 
-        // Démarrage automatique au chargement de la page
         window.addEventListener('DOMContentLoaded', chargerPortfolio);
     </script>
 </body>
