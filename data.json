@@ -1,1 +1,23 @@
-{}
+{
+  "profil": {
+    "nom": "",
+    "titre": "",
+    "bio": "",
+    "github": "",
+    "instagram": "",
+    "photo": ""
+  },
+  "projets": [
+    {
+      "titre": "touche",
+      "cat": "fusion",
+      "tech": "3d",
+      "link": "",
+      "desc": "un touche",
+      "photo": "",
+      "fichier_nom": "",
+      "fichier_data": "",
+      "fichiers": []
+    }
+  ]
+}
